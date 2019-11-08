@@ -1,7 +1,6 @@
 package modele;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 public class PetriNet {
 
@@ -56,6 +55,37 @@ public class PetriNet {
             return tokens.remove(petriObject);
         }
         return false;
+    }
+
+    public boolean franchir(Transition t){
+        LinkedList<Token> lTokens = new LinkedList<>();
+
+        if (!t.isFranchissable())
+                return false;
+
+        for (ArcPre arcPre : t.getArcPres()){
+            Iterator<Token> it = arcPre.getPlaceO().getTokens().iterator();
+            for (int i =0; i < arcPre.getPoids(); i++){
+                lTokens.add(it.next());
+                arcPre.getPlaceO().getTokens().remove(lTokens.get(lTokens.size()-1));
+            }
+        }
+
+        for (ArcPost arcPost : t.getArcPosts()){
+            for (int i =0; i < arcPost.getPoids(); i++){
+                if(!lTokens.isEmpty()){
+                    arcPost.getPlaceDest().getTokens().add(lTokens.removeLast());
+                }else{
+                    Token tempToken = new Token();
+                    arcPost.getPlaceDest().getTokens().add(tempToken);
+                }
+
+
+            }
+        }
+
+    return true;
+
     }
 
 
