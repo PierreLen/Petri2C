@@ -9,6 +9,7 @@ public abstract class Arc extends PetriObject{
     public Arc(int poids) {
         this();
         this.poids = poids;
+        
     }
 
     public Arc() {

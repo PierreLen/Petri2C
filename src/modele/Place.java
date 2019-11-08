@@ -5,14 +5,14 @@ import java.util.Set;
 
 public class Place extends PetriObject {
 
-    private Set<ArcPre> arcPres;
+
     private Set<Token> tokens;
 
 
     public Place() {
         super();
         this.tokens = new HashSet<>();
-        this.arcPres = new HashSet<>();
+
 
     }
 
@@ -28,13 +28,6 @@ public class Place extends PetriObject {
         return this.tokens.remove(t);
     }
 
-    public boolean addArcPre(ArcPre arcPre){
-        return arcPres.add(arcPre);
-    }
-
-    public boolean removeArcPre(ArcPre arcPre){
-        return arcPres.remove(arcPre);
-    }
 
 
 
