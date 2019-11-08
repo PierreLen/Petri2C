@@ -84,8 +84,8 @@ public class PetriNet {
             }
 
             if(!lTokens.isEmpty()){
-                for (Token t : lTokens){
-                    this.removePetriObject(t);
+                for (Token token : lTokens){
+                    this.removePetriObject(token);
                 }
             }
         }
