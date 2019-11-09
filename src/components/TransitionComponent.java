@@ -6,8 +6,14 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import modele.Transition;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class TransitionComponent extends PetriObjectComponent {
     private Transition transition;
+
+    private List<ArcPostComponent> arcPosts = new ArrayList<>();
+    private List<ArcPreComponent> arcPres = new ArrayList<>();
 
     public TransitionComponent(Transition transition, int x, int y) {
         super(x, y);
@@ -34,5 +40,19 @@ public class TransitionComponent extends PetriObjectComponent {
         return TName;
     }
 
+    public List<ArcPostComponent> getArcPosts() {
+        return arcPosts;
+    }
 
+    public List<ArcPreComponent> getArcPres() {
+        return arcPres;
+    }
+
+    public void addArcPre(ArcPreComponent arcPreComponent) {this.arcPres.add(arcPreComponent);}
+
+    public void addArcPost(ArcPostComponent arcPostComponent) {this.arcPosts.add(arcPostComponent);}
+
+    public Transition getTransition() {
+        return transition;
+    }
 }

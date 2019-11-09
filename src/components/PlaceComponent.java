@@ -1,5 +1,7 @@
 package components;
 
+import javafx.event.EventHandler;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
@@ -40,6 +42,7 @@ public class PlaceComponent extends PetriObjectComponent {
         return nbToken;
     }
 
+
     private Text getPlaceName() {
         Text placeName = new Text(this.place.getDescription());
         placeName.setFont(new Font(25));
@@ -50,5 +53,9 @@ public class PlaceComponent extends PetriObjectComponent {
 
     public static int getBaseRadius() {
         return BASE_RADIUS;
+    }
+
+    public Place getPlace() {
+        return place;
     }
 }

@@ -17,15 +17,19 @@
                 </RadioButton>
                 <RadioButton fx:id="radioTransition" text="Transition" toggleGroup="$componentsGroup"/>
                 <RadioButton fx:id="radioArc" text="Arc" toggleGroup="$componentsGroup"/>
+                <RadioButton fx:id="radioEdition" text="Edition" toggleGroup="$componentsGroup"/>
+                <Label fx:id="labelPosition"/>
             </VBox>
         </AnchorPane>
         <AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="160.0" prefWidth="100.0">
             <Pane fx:id="petriNetPane"
-                  onMouseClicked="#addElement"
-                  onMouseMoved="#showArc"
+                  onMouseClicked="#MouseClicked"
+                  onMouseMoved="#MouseMove"
+                  onMouseDragged="#MouseDragged"
                   prefHeight="398.0" prefWidth="417.0"
                   AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
                   AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
+
         </AnchorPane>
     </items>
 </SplitPane>
