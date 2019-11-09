@@ -14,6 +14,15 @@ public class Token extends PetriObject{
         this.currentPlace = currentPlace;
     }
 
+
+    public Place getCurrentPlace() {
+        return currentPlace;
+    }
+
+    public void setCurrentPlace(Place currentPlace) {
+        this.currentPlace = currentPlace;
+    }
+
     public void reserver(){
         this.reserve = true;
     }

@@ -1,0 +1,13 @@
+.root {
+    -fx-background-color: #afb1b3;
+}
+
+.label {
+    -fx-font-size: 20;
+}
+
+#helloWorld {
+    -fx-border-width: 2;
+    -fx-border-style: solid;
+    -fx-border-color: #76ee85;
+}

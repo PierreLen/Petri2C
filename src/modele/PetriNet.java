@@ -1,6 +1,9 @@
 package modele;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.Set;
 
 public class PetriNet {
 
@@ -18,7 +21,7 @@ public class PetriNet {
         this.transitions = new HashSet<>();
     }
 
-    public void addPetriObjects(PetriObject ...petriObjects) {
+    public void addPetriObjects(PetriObject... petriObjects) {
         for (PetriObject petriObject : petriObjects) {
             if (petriObject instanceof ArcPre) {
                 arcPres.add((ArcPre) petriObject);
@@ -57,41 +60,37 @@ public class PetriNet {
         return false;
     }
 
-    public boolean franchir(Transition t){
+    public boolean franchir(Transition t) {
         LinkedList<Token> lTokens = new LinkedList<>();
 
         if (!t.isFranchissable())
-                return false;
+            return false;
 
-        for (ArcPre arcPre : t.getArcPres()){
+        for (ArcPre arcPre : t.getArcPres()) {
             Iterator<Token> it = arcPre.getPlaceO().getTokens().iterator();
-            for (int i =0; i < arcPre.getPoids(); i++){
+            for (int i = 0; i < arcPre.getPoids(); i++) {
                 lTokens.add(it.next());
-                arcPre.getPlaceO().getTokens().remove(lTokens.get(lTokens.size()-1));
+                arcPre.getPlaceO().getTokens().remove(lTokens.get(lTokens.size() - 1));
             }
         }
 
-        for (ArcPost arcPost : t.getArcPosts()){
-            for (int i =0; i < arcPost.getPoids(); i++){
-                if(!lTokens.isEmpty()){
+        for (ArcPost arcPost : t.getArcPosts()) {
+            for (int i = 0; i < arcPost.getPoids(); i++) {
+                if (!lTokens.isEmpty()) {
                     arcPost.getPlaceDest().getTokens().add(lTokens.removeLast());
-                }else{
+                } else {
                     Token tempToken = new Token();
                     arcPost.getPlaceDest().getTokens().add(tempToken);
                 }
-
-
             }
 
-            if(!lTokens.isEmpty()){
-                for (Token token : lTokens){
+            if (!lTokens.isEmpty()) {
+                for (Token token : lTokens) {
                     this.removePetriObject(token);
                 }
             }
         }
-
-    return true;
-
+        return true;
     }
 
 

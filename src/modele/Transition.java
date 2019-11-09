@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class Transition extends PetriObject {
+    private static int LAST_TRANSITION_CREATED = 0;
 
     private Set<ArcPost> arcPosts;
     private Set<ArcPre> arcPres;
@@ -13,6 +14,7 @@ public class Transition extends PetriObject {
         super();
         this.arcPosts = new HashSet<>();
         this.arcPres = new HashSet<>();
+        this.description = "T" + (++LAST_TRANSITION_CREATED);
     }
 
     public boolean addArcPost(ArcPost arcPost) {
