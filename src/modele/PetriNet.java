@@ -1,9 +1,6 @@
 package modele;
 
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.Set;
+import java.util.*;
 
 public class PetriNet {
 
@@ -92,6 +89,45 @@ public class PetriNet {
         }
         return true;
     }
+
+    /**
+     * Renvoie la matrice d'incidence du réseau
+     * @return
+     */
+    public Map<Place, Map<Transition,Integer>> incidenceMatric() {
+
+        Map<Place, Map<Transition,Integer>> matrix = new HashMap<>();
+
+        for (Place p : this.places) {
+            Map<Transition, Integer> transitionMatrix = new HashMap<>();
+            for (Transition transition : this.transitions) {
+                transitionMatrix.put(transition, 0);
+            }
+            matrix.put(p, transitionMatrix);
+        }
+        for (Place p : this.places) {
+            Map temp = matrix.get(p);
+            for (Transition transition : this.transitions) {
+
+                for (ArcPost arcPost : transition.getArcPosts()) {
+                    if (arcPost.getPlaceDest() == p) {
+                        temp.put(transition, (int)temp.get(transition) - arcPost.getPoids());
+                    }
+                }
+                for (ArcPre arcPre : transition.getArcPres()) {
+                    if (arcPre.getPlaceO() == p) {
+                        temp.put(transition, (int)temp.get(transition) + arcPre.getPoids());
+                    }
+                }
+
+            }
+            matrix.put(p, temp);
+        }
+
+        return matrix;
+
+    }
+
 
 
 }

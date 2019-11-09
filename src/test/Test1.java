@@ -8,9 +8,12 @@ public class Test1 {
         PetriNet pn = new PetriNet();
 
         Token token1 = new Token();
+        token1.setDescription("token1");
 
         Place p1 = new Place();
+        p1.setDescription("p1");
         Place p2 = new Place();
+        p2.setDescription("p2");
 
         Transition t1 = new Transition();
         Transition t2 = new Transition();
@@ -30,11 +33,14 @@ public class Test1 {
 
 
         pn.addPetriObjects(token1,p1,p2,t1,t2,ap1,ap2,apr1,apr2);
+        /*
         System.out.println(p1.getNbJetons());
         System.out.println(p2.getNbJetons());
         //System.out.println(pn.franchir(t2));
         pn.franchir(t1);
         System.out.println(p1.getNbJetons());
         System.out.println(p2.getNbJetons());
+        */
+        System.out.println(pn.incidenceMatric());
     }
 }
