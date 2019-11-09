@@ -4,15 +4,17 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class Transition extends PetriObject {
+    private static int LAST_TRANSITION_CREATED = 0;
 
     private Set<ArcPost> arcPosts;
     private Set<ArcPre> arcPres;
-    private boolean franchissable = true;
+
 
     public Transition() {
         super();
         this.arcPosts = new HashSet<>();
         this.arcPres = new HashSet<>();
+        this.description = "T" + (++LAST_TRANSITION_CREATED);
     }
 
     public boolean addArcPost(ArcPost arcPost) {
@@ -33,5 +35,23 @@ public class Transition extends PetriObject {
     public boolean removeArcPre(ArcPre arcPre){
 
         return arcPres.remove(arcPre);
+    }
+
+    public Set<ArcPost> getArcPosts() {
+        return arcPosts;
+    }
+
+    public Set<ArcPre> getArcPres() {
+        return arcPres;
+    }
+
+    public boolean isFranchissable() {
+        for (ArcPre arcPre : this.getArcPres()){
+            if (arcPre.getPlaceO().getNbJetons() < arcPre.getPoids()){
+                System.out.println(arcPre.getPlaceO().getNbJetons());
+                return false;
+            }
+        }
+        return true;
     }
 }
