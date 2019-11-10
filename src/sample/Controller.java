@@ -19,6 +19,7 @@ public class Controller {
     public Pane petriNetPane;
     public Label labelPosition;
     public RadioButton radioEdition;
+
     private PetriNet petriNet;
     private PlaceComponent placeSelected;
     private TransitionComponent transitionSelected;
@@ -26,8 +27,57 @@ public class Controller {
     private boolean dragging = false;
     private PetriObjectComponent draggingComponent;
 
+
     public Controller() {
         petriNet = new PetriNet();
+    }
+
+
+    public void MouseDragged(MouseEvent mouseEvent) {
+        if (this.dragging) {
+            this.placeSelected = null;
+            this.transitionSelected = null;
+            for (Node child : petriNetPane.getChildren()) {
+                if (child instanceof ArcPreComponent) {
+                    ArcPreComponent apc = (ArcPreComponent) child;
+                    apc.update();
+                } else if (child instanceof ArcPostComponent) {
+                    ArcPostComponent apc = (ArcPostComponent) child;
+                    apc.update();
+                }
+            }
+            draggingComponent.setX((int) mouseEvent.getX());
+            draggingComponent.setY((int) mouseEvent.getY());
+        }
+    }
+
+    /**
+     * Affiche un arc pour indiquer à l'utilisateur quel arc il est en train de dessiner
+     *
+     * @param mouseEvent
+     */
+    public void MouseMove(MouseEvent mouseEvent) {
+        if (componentsGroup.getSelectedToggle() == radioArc) {
+            if (lastArc != null) {
+                removeLastArc();
+            }
+            if (placeSelected != null) {
+                lastArc = new ArcComponent(placeSelected.getX(), placeSelected.getY(),
+                        (int) mouseEvent.getX(), (int) mouseEvent.getY() - 3, 2);
+            } else if (transitionSelected != null) {
+                lastArc = new ArcComponent(transitionSelected.getX(), transitionSelected.getY(),
+                        (int) mouseEvent.getX(), (int) mouseEvent.getY(), 1);
+            }
+            if (lastArc != null)
+                petriNetPane.getChildren().add(lastArc);
+        }
+    }
+
+    /**
+     * Retire l'arc de prévisualisation de la fenetre graphique
+     */
+    private void removeLastArc() {
+        petriNetPane.getChildren().remove(lastArc);
     }
 
     public void MouseClicked(MouseEvent mouseEvent) {
@@ -94,13 +144,6 @@ public class Controller {
     }
 
     /**
-     * Retire l'arc de prévisualisation de la fenetre graphique
-     */
-    private void removeLastArc() {
-        petriNetPane.getChildren().remove(lastArc);
-    }
-
-    /**
      * Ajoute un arc Post à la fenêtre graphique et l'ajoute aussi à l'objet PetriNet pour garder un cohérence des
      * données
      *
@@ -140,47 +183,5 @@ public class Controller {
             removeLastArc();
         lastArc = null;
     }
-
-    /**
-     * Affiche un arc pour indiquer à l'utilisateur quel arc il est en train de dessiner
-     *
-     * @param mouseEvent
-     */
-    public void MouseMove(MouseEvent mouseEvent) {
-        labelPosition.setText("X: " + mouseEvent.getX() + ", Y: " + mouseEvent.getY());
-        if (componentsGroup.getSelectedToggle() == radioArc) {
-            if (lastArc != null) {
-                removeLastArc();
-            }
-            if (placeSelected != null) {
-                lastArc = new ArcComponent(placeSelected.getX(), placeSelected.getY(),
-                        (int) mouseEvent.getX(), (int) mouseEvent.getY() - 3, 2);
-            } else if (transitionSelected != null) {
-                lastArc = new ArcComponent(transitionSelected.getX(), transitionSelected.getY(),
-                        (int) mouseEvent.getX(), (int) mouseEvent.getY(), 1);
-            }
-            if (lastArc != null)
-                petriNetPane.getChildren().add(lastArc);
-        }
-    }
-
-    public void MouseDragged(MouseEvent mouseEvent) {
-        if (this.dragging) {
-            this.placeSelected = null;
-            this.transitionSelected = null;
-            for (Node child : petriNetPane.getChildren()) {
-                if ( child instanceof ArcPreComponent){
-                    ArcPreComponent apc = (ArcPreComponent) child;
-                    apc.update();
-                }else if (child instanceof ArcPostComponent ){
-                    ArcPostComponent apc = (ArcPostComponent) child;
-                    apc.update();
-                }
-            }
-            draggingComponent.setX((int) mouseEvent.getX());
-            draggingComponent.setY((int) mouseEvent.getY());
-        }
-    }
-
 
 }

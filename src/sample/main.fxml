@@ -10,26 +10,17 @@
             <VBox prefHeight="200.0">
                 <Label text="Ajout"/>
 
-                <RadioButton fx:id="radioPlace" text="Place">
+                <RadioButton  onMouseClicked="#selectPlace" fx:id="radioPlace" text="Place">
                     <toggleGroup>
                         <ToggleGroup fx:id="componentsGroup"/>
                     </toggleGroup>
                 </RadioButton>
-                <RadioButton fx:id="radioTransition" text="Transition" toggleGroup="$componentsGroup"/>
-                <RadioButton fx:id="radioArc" text="Arc" toggleGroup="$componentsGroup"/>
-                <RadioButton fx:id="radioEdition" text="Edition" toggleGroup="$componentsGroup"/>
+                <RadioButton onMouseClicked="#selectTransition" fx:id="radioTransition" text="Transition" toggleGroup="$componentsGroup"/>
+                <RadioButton onMouseClicked="#selectArc" fx:id="radioArc" text="Arc" toggleGroup="$componentsGroup"/>
+                <RadioButton onMouseClicked="#selectEdition" fx:id="radioEdition" text="Edition" toggleGroup="$componentsGroup"/>
                 <Label fx:id="labelPosition"/>
             </VBox>
         </AnchorPane>
-        <AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="160.0" prefWidth="100.0">
-            <Pane fx:id="petriNetPane"
-                  onMouseClicked="#MouseClicked"
-                  onMouseMoved="#MouseMove"
-                  onMouseDragged="#MouseDragged"
-                  prefHeight="398.0" prefWidth="417.0"
-                  AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
-                  AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
-
-        </AnchorPane>
+        <fx:include fx:id="" source="petriEditor.fxml"/>
     </items>
 </SplitPane>
