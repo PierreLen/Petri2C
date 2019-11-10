@@ -41,6 +41,12 @@ public class Test1 {
         System.out.println(p1.getNbJetons());
         System.out.println(p2.getNbJetons());
         */
-        System.out.println(pn.incidenceMatric());
+        //pn.incidenceMatric();
+        //System.out.println(pn.getIncidenceMatrix());
+        Marquage M1 = pn.getCurrentMarquage();
+        pn.franchir(t1);
+        Marquage M2 = pn.getCurrentMarquage();
+        //System.out.println(M1.equals(M2));
+        System.out.println(pn.getGraphMarquage(pn));
     }
 }

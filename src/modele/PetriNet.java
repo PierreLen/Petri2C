@@ -1,5 +1,7 @@
 package modele;
 
+import com.sun.xml.internal.bind.v2.TODO;
+
 import java.util.*;
 
 public class PetriNet {
@@ -9,6 +11,7 @@ public class PetriNet {
     private Set<ArcPre> arcPres;
     private Set<Place> places;
     private Set<Transition> transitions;
+    private Map<Place, Map<Transition, Integer>> incidenceMatrix;
 
     public PetriNet() {
         this.arcPosts = new HashSet<>();
@@ -16,6 +19,7 @@ public class PetriNet {
         this.arcPres = new HashSet<>();
         this.places = new HashSet<>();
         this.transitions = new HashSet<>();
+        this.incidenceMatrix = null;
     }
 
     public void addPetriObjects(PetriObject... petriObjects) {
@@ -91,12 +95,11 @@ public class PetriNet {
     }
 
     /**
-     * Renvoie la matrice d'incidence du réseau
-     * @return
+     * Calcul la matrice d'incidence du réseau
      */
-    public Map<Place, Map<Transition,Integer>> incidenceMatric() {
+    public void incidenceMatric() {
 
-        Map<Place, Map<Transition,Integer>> matrix = new HashMap<>();
+        Map<Place, Map<Transition, Integer>> matrix = new HashMap<>();
 
         for (Place p : this.places) {
             Map<Transition, Integer> transitionMatrix = new HashMap<>();
@@ -111,12 +114,12 @@ public class PetriNet {
 
                 for (ArcPost arcPost : transition.getArcPosts()) {
                     if (arcPost.getPlaceDest() == p) {
-                        temp.put(transition, (int)temp.get(transition) - arcPost.getPoids());
+                        temp.put(transition, (int) temp.get(transition) - arcPost.getPoids());
                     }
                 }
                 for (ArcPre arcPre : transition.getArcPres()) {
                     if (arcPre.getPlaceO() == p) {
-                        temp.put(transition, (int)temp.get(transition) + arcPre.getPoids());
+                        temp.put(transition, (int) temp.get(transition) + arcPre.getPoids());
                     }
                 }
 
@@ -124,10 +127,91 @@ public class PetriNet {
             matrix.put(p, temp);
         }
 
-        return matrix;
+        this.incidenceMatrix = matrix;
 
+    }
+
+    public Map<Place, Map<Transition, Integer>> getIncidenceMatrix() {
+        return incidenceMatrix;
+    }
+
+    public Marquage getCurrentMarquage() {
+        Marquage currentMarquage = new Marquage();
+        for (Place p : this.places) {
+            currentMarquage.addPlace(p, p.getNbJetons());
+        }
+        return currentMarquage;
+    }
+
+    public Map<Marquage, Set<Marquage>> getGraphMarquage(PetriNet petriNet) {
+        Map<Marquage, Set<Marquage>> grapheMarquage = new HashMap<>();
+        grapheMarquage = petriNet.getGrapheMarquageSetMap(grapheMarquage);
+
+
+        return grapheMarquage;
     }
 
 
 
+
+    private Set<Marquage> getAcces(Transition t) {
+        Set<Marquage> newMarquagesAccesible = new HashSet<>();
+
+            if (this.franchir(t)) {
+                newMarquagesAccesible.add(this.getCurrentMarquage());
+            }
+
+        return newMarquagesAccesible;
+
+    }
+
+    //TODO ajouter des la récursivité
+    // TODO ajouter la verification borné ou non avec la classe marquage
+    private Map<Marquage, Set<Marquage>> getGrapheMarquageSetMap(Map<Marquage, Set<Marquage>> graphe){
+
+        PetriNet pn = this;
+        for (Transition t : this.getTransitionsFranchissable()){
+            Marquage prevMarquage = pn.getCurrentMarquage();
+            PetriNet pnTemp = pn;
+            if(pn.franchir(t)){
+
+                if(graphe.get(prevMarquage) == null){
+                    //on as jamais été sur cette place
+                    System.out.println("la1");
+                    Set<Marquage> marquageList = new HashSet<>();
+                    marquageList.add(pn.getCurrentMarquage());
+                    graphe.put(prevMarquage, marquageList);
+
+                }else{
+
+                    //TODO a revoir
+
+                    System.out.println("la2");
+                    if(graphe.get(prevMarquage) == pn.getAcces(t)){
+                        return graphe;
+                    }else{
+
+                        //gerer les nouveau marquage
+                        Set<Marquage> grapheTemp =new HashSet<>();
+                        grapheTemp.addAll(pn.getAcces(t));
+                        graphe.put(prevMarquage, grapheTemp);
+                    }
+                }
+
+            }
+        }
+
+        return graphe;
+    }
+
+    public Set<Transition> getTransitionsFranchissable(){
+        Set<Transition> setTransition= new HashSet<>();
+        for (Transition t : this.transitions){
+            if(t.isFranchissable()){
+                setTransition.add(t);
+            }
+
+        }
+        return setTransition;
+    }
 }
