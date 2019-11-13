@@ -13,6 +13,12 @@ public class Place extends PetriObject {
         this.description = "P" + (++LAST_PLACE_CREATED);
     }
 
+    public Place(Place place){
+        this.id = place.id;
+        this.tokens = new HashSet<>(place.tokens);
+        this.description = place.description;
+    }
+
     public int getNbJetons() {
         return tokens.size();
     }

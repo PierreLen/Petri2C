@@ -8,6 +8,7 @@ public class ArcPre extends Arc {
     public ArcPre(Transition transitionDest, Place placeO) {
         super();
         this.transitionDest = transitionDest;
+        transitionDest.addArcPre(this);
         this.placeO = placeO;
     }
 

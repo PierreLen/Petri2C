@@ -53,6 +53,6 @@ public class Marquage extends PetriObject {
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), places);
+        return Objects.hash(places);
     }
 }
