@@ -14,8 +14,13 @@ public class ArcPost extends Arc {
     public ArcPost(Transition transitionO, Place placeDest) {
         super();
         this.transitionO = transitionO;
+        transitionO.addArcPost(this);
         this.placeDest = placeDest;
     }
+
+//    public ArcPost(ArcPost arcPost){
+//        this.placeDest =
+//    }
 
     public Transition getTransitionO() {
         return transitionO;
