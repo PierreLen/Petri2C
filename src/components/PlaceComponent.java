@@ -1,6 +1,7 @@
 package components;
 
 import javafx.event.EventHandler;
+import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -8,9 +9,12 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import modele.Place;
 
+import java.util.regex.Pattern;
+
 public class PlaceComponent extends PetriObjectComponent {
 
     private static final int BASE_RADIUS = 20;
+    private Pattern pattern = Pattern.compile("-?\\d+(\\.\\d+)?");
     private Place place;
 
     public PlaceComponent(Place place, int x, int y) {
@@ -42,6 +46,17 @@ public class PlaceComponent extends PetriObjectComponent {
         return nbToken;
     }
 
+
+
+    public void update() {
+
+        this.getChildren().clear();
+        this.getChildren().add(getBackground());
+        // texte avec le nombre de jetons
+        this.getChildren().add(getNbToken());
+        // nom de la place
+        this.getChildren().add(getPlaceName());
+    }
 
     private Text getPlaceName() {
         Text placeName = new Text(this.place.getDescription());

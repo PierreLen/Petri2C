@@ -10,12 +10,15 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import modele.*;
 
+import javax.xml.transform.sax.SAXSource;
+
 public class Controller {
 
     public ToggleGroup componentsGroup;
     public RadioButton radioPlace;
     public RadioButton radioTransition;
     public RadioButton radioArc;
+    public RadioButton radioToken;
     public Pane petriNetPane;
     public Label labelPosition;
     public RadioButton radioEdition;
@@ -82,7 +85,7 @@ public class Controller {
 
     public void MouseClicked(MouseEvent mouseEvent) {
         if (mouseEvent.getButton() == MouseButton.SECONDARY) {
-            LeftMouseClicked();
+            LeftMouseClicked(mouseEvent);
         }
         if (radioPlace == componentsGroup.getSelectedToggle()) {
             handlePlaceMouseClick(mouseEvent);
@@ -90,13 +93,49 @@ public class Controller {
         if (radioTransition == componentsGroup.getSelectedToggle()) {
             handleTransitionMouseClicked(mouseEvent);
         }
+        if (radioToken == componentsGroup.getSelectedToggle()) {
+            //handlePlaceMouseClick(mouseEvent);
+            if(placeSelected != null){
+                handleAddTokenMouseClick(mouseEvent);
+            }
+        }
+        //System.out.println(petriNetPane.getChildren());
     }
 
-    private void LeftMouseClicked() {
+    private void LeftMouseClicked(MouseEvent mouseEvent) {
+        if (radioToken == componentsGroup.getSelectedToggle()) {
+            //handlePlaceMouseClick(mouseEvent);
+            if(placeSelected != null){
+                handleRemoveTokenMouseClick(mouseEvent);
+                System.out.println(petriNet.toString());
+            }
+        }
         placeSelected = null;
         transitionSelected = null;
         removeLastArc();
         lastArc = null;
+    }
+
+    private void handleAddTokenMouseClick(MouseEvent mouseEvent){
+        Token t = new Token();
+        t.setCurrentPlace(placeSelected.getPlace());
+        placeSelected.getPlace().addToken(t);
+        petriNet.addPetriObjects(t);
+        placeSelected.update();
+        placeSelected = null;
+        //System.out.println(petriNet.getCurrentMarquage());
+    }
+
+    private void handleRemoveTokenMouseClick(MouseEvent mouseEvent){
+        if (placeSelected.getPlace().getNbJetons() >0){
+            Token t = placeSelected.getPlace().getTokens().get(placeSelected.getPlace().getNbJetons()-1);
+            petriNet.removePetriObject(t);
+            placeSelected.getPlace().removeToken(t);
+            t.removePlace();
+
+            placeSelected.update();
+        }
+        //System.out.println(petriNet.getCurrentMarquage());
     }
 
     private void handlePlaceMouseClick(MouseEvent mouseEvent) {

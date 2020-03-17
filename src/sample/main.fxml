@@ -18,6 +18,7 @@
                 <RadioButton fx:id="radioTransition" text="Transition" toggleGroup="$componentsGroup"/>
                 <RadioButton fx:id="radioArc" text="Arc" toggleGroup="$componentsGroup"/>
                 <RadioButton fx:id="radioEdition" text="Edition" toggleGroup="$componentsGroup"/>
+                <RadioButton fx:id="radioToken" text="Token" toggleGroup="$componentsGroup"/>
                 <Label fx:id="labelPosition"/>
             </VBox>
         </AnchorPane>

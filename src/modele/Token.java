@@ -29,6 +29,8 @@ public class Token extends PetriObject {
         this.currentPlace = currentPlace;
     }
 
+    public void removePlace () {this.currentPlace = null;}
+
     public void reserver() {
         this.reserve = true;
     }
@@ -41,5 +43,10 @@ public class Token extends PetriObject {
         return reserve;
     }
 
-
+    @Override
+    public String toString() {
+        return "Token{" +
+                "id=" + id +
+                '}';
+    }
 }

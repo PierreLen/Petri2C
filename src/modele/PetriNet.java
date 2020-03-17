@@ -213,4 +213,11 @@ public class PetriNet {
         }
         return false;
     }
+
+    @Override
+    public String toString() {
+        return "PetriNet{" +
+                "tokens=" + tokens +
+                '}';
+    }
 }
