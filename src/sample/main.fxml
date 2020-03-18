@@ -5,13 +5,13 @@
 
 <SplitPane dividerPositions="0.29797979797979796" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
     <items>
-        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="258.0" prefWidth="81.0">
             <VBox prefHeight="200.0">
                 <Label text="Ajout" />
 
                 <RadioButton fx:id="radioPlace" text="Place">
                     <toggleGroup>
-                        <ToggleGroup fx:id="componentsGroup"  />
+                        <ToggleGroup fx:id="componentsGroup" />
                     </toggleGroup>
                 </RadioButton>
                 <RadioButton fx:id="radioTransition" text="Transition" toggleGroup="$componentsGroup" />
@@ -21,6 +21,7 @@
                 <RadioButton fx:id="radioFranchir" onMouseClicked="#franchirupdate" text="Franchir" toggleGroup="$componentsGroup" />
                 <Label fx:id="labelPosition" />
             </VBox>
+         <Pane fx:id="graphMarquage" layoutY="200.0" prefHeight="200.0" prefWidth="175.0" />
         </AnchorPane>
         <AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="160.0" prefWidth="100.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
             <Pane fx:id="petriNetPane" onMouseClicked="#MouseClicked" onMouseDragged="#MouseDragged" onMouseMoved="#MouseMove" prefHeight="398.0" prefWidth="417.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
