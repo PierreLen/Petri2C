@@ -54,10 +54,13 @@ public class Transition extends PetriObject {
                 return false;
             }
         }
+
         return true;
     }
 
     public Set<ArcPre> getArcPres() {
         return arcPres;
     }
+
+
 }

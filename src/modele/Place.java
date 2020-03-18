@@ -14,6 +14,10 @@ public class Place extends PetriObject {
         this.tokens = new LinkedList<Token>();
         this.description = "P" + (++LAST_PLACE_CREATED);
     }
+    public Place(String description){
+        this();
+        this.description = description;
+    }
 
     public Place(Place place){
         this.id = place.id;
@@ -35,6 +39,10 @@ public class Place extends PetriObject {
 
     public boolean removeToken(Token t) {
         return this.tokens.remove(t);
+    }
+
+    public void viderPlace(){
+        this.tokens = new LinkedList<>();
     }
 
     public List<Token> getTokens() {

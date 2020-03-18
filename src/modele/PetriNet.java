@@ -20,6 +20,41 @@ public class PetriNet {
         this.places = new HashSet<>(pn.places);
         this.transitions = new HashSet<>(pn.transitions);
         this.incidenceMatrix = pn.incidenceMatrix;
+
+    }
+
+    public void restore(Map<Place, Integer> dumpMap) {
+        System.out.println("RESTORE !!!");
+        System.out.println(getCurrentMarquage());
+        System.out.println(dumpMap);
+        ArrayList<Token> tokenList = new ArrayList<Token>(this.tokens);
+        int globalIndex = 0;
+        for (Place place : dumpMap.keySet()) {
+            place.viderPlace();
+            for (int i = 0; i < dumpMap.get(place); i++) {
+                try {
+                    tokenList.get(globalIndex).setCurrentPlace(place);
+                    place.addToken(tokenList.get(globalIndex));
+                } catch (IndexOutOfBoundsException e) {
+                    Token t = new Token();
+                    t.setCurrentPlace(place);
+                    this.tokens.add(t);
+                    place.addToken(t);
+                }
+                globalIndex++;
+            }
+        }
+        System.out.println(getCurrentMarquage());
+        System.out.println("END RESTORE \n\n\n");
+
+    }
+
+    public Map<Place, Integer> dumpState() {
+        Map<Place, Integer> dumpMap = new HashMap<>();
+        for (Place place : places) {
+            dumpMap.put(place, place.getNbJetons());
+        }
+        return dumpMap;
     }
 
     public PetriNet() {
@@ -156,16 +191,19 @@ public class PetriNet {
         if (!t.isFranchissable())
             return false;
 
+//        int indexGlobal
         for (ArcPre arcPre : t.getArcPres()) {
-            Iterator<Token> it = arcPre.getPlaceO().getTokens().iterator();
-            for (int i = 0; i < arcPre.getPoids(); i++) {
-                lTokens.add(it.next());
+            for (Token token : arcPre.getPlaceO().getTokens()) {
+                for (int i = 0; i < arcPre.getPoids(); i++) {
+                    lTokens.add(token);
+                }
+
             }
             for (int i = 0; i < arcPre.getPoids(); i++) {
-                arcPre.getPlaceO().getTokens().remove(lTokens.get(i));
+                arcPre.getPlaceO().getTokens().removeAll(lTokens);
             }
         }
-
+        //System.out.println(lTokens);
         for (ArcPost arcPost : t.getArcPosts()) {
             for (int i = 0; i < arcPost.getPoids(); i++) {
                 if (!lTokens.isEmpty()) {
@@ -174,6 +212,7 @@ public class PetriNet {
                     Token tempToken = new Token();
                     tempToken.setCurrentPlace(arcPost.getPlaceDest());
                     arcPost.getPlaceDest().getTokens().add(tempToken);
+                    this.tokens.add(tempToken);
                 }
             }
 

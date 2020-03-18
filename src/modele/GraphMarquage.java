@@ -25,14 +25,25 @@ public class GraphMarquage {
         if (!grapheDeMarquage.containsKey(currentMarquage))
             grapheDeMarquage.put(currentMarquage, marquages);
         else return;
-        Set<Transition> transitionsFranchissable = petriNet.getTransitionsFranchissable();
+        Set<Transition> transitionsFranchissable = net.getTransitionsFranchissable();
+        Map<Place, Integer> dumpMap = net.dumpState();
+
         for (Transition transition : transitionsFranchissable) {
-            PetriNet tempPn = new PetriNet(net);
-            tempPn.franchir(transition);
-            marquages.add(tempPn.getCurrentMarquage());
-            getMarquage(tempPn);
+//            PetriNet tempPn = new PetriNet(net);
+//            tempPn.franchir(transition);
+            net.franchir(transition);
+            marquages.add(net.getCurrentMarquage());
+            getMarquage(net);
+            net.restore(dumpMap);
         }
     }
 
-
+    @Override
+    public String toString() {
+        String str = "";
+        for (Marquage marquage : grapheDeMarquage.keySet()) {
+            str += marquage.toString() + '\n';
+        }
+        return str;
+    }
 }

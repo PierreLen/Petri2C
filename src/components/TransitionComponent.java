@@ -18,17 +18,17 @@ public class TransitionComponent extends PetriObjectComponent {
     public TransitionComponent(Transition transition, int x, int y) {
         super(x, y);
         this.transition = transition;
-        this.getChildren().add(getBackground());
+        this.getChildren().add(getBackground(Color.BLACK));
         this.getChildren().add(getTransitionName());
     }
 
-    public Rectangle getBackground() {
+    public Rectangle getBackground(Color color) {
         Rectangle rectangle = new Rectangle();
         rectangle.setWidth(40);
         rectangle.setHeight(6);
         rectangle.setTranslateX(-20);
         rectangle.setTranslateY(-3);
-        rectangle.setFill(Color.BLACK);
+        rectangle.setFill(color);
         return rectangle;
     }
 
@@ -38,6 +38,20 @@ public class TransitionComponent extends PetriObjectComponent {
         TName.setTranslateY(5);
         TName.setTranslateX(30);
         return TName;
+    }
+
+    public void updateColor(Boolean simu){
+        this.getChildren().clear();
+        if (simu){
+            if (this.getTransition().isFranchissable()){
+                this.getChildren().add(getBackground(Color.GREEN));
+            }else{
+                this.getChildren().add(getBackground(Color.RED));
+            }
+        }else {
+            this.getChildren().add(getBackground(Color.BLACK));
+        }
+        this.getChildren().add(getTransitionName());
     }
 
     public List<ArcPostComponent> getArcPosts() {

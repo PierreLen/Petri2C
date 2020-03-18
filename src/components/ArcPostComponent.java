@@ -79,4 +79,7 @@ public class ArcPostComponent extends Parent {
         this.getChildren().add(triangle);
     }
 
+    public PlaceComponent getPlace() {
+        return place;
+    }
 }

@@ -19,7 +19,9 @@ public class Controller {
     public RadioButton radioTransition;
     public RadioButton radioArc;
     public RadioButton radioToken;
+    public RadioButton radioFranchir;
     public Pane petriNetPane;
+    public Pane graphMarquage;
     public Label labelPosition;
     public RadioButton radioEdition;
 
@@ -36,8 +38,10 @@ public class Controller {
     }
 
 
+
+
     public void MouseDragged(MouseEvent mouseEvent) {
-        if (this.dragging) {
+        if (this.dragging && (radioEdition == componentsGroup.getSelectedToggle() || radioArc == componentsGroup.getSelectedToggle())) {
             this.placeSelected = null;
             this.transitionSelected = null;
             for (Node child : petriNetPane.getChildren()) {
@@ -51,6 +55,19 @@ public class Controller {
             }
             draggingComponent.setX((int) mouseEvent.getX());
             draggingComponent.setY((int) mouseEvent.getY());
+        }
+    }
+
+
+    /**
+     * Equivalent d'un lisener sur le bouton franchir (a améliorer)
+     * @param mouseEvent
+     */
+    public void franchirupdate(MouseEvent mouseEvent){
+        if (radioFranchir.isSelected()){
+            updateColor(true);
+        }else{
+            updateColor(false);
         }
     }
 
@@ -99,7 +116,31 @@ public class Controller {
                 handleAddTokenMouseClick(mouseEvent);
             }
         }
+        if (radioFranchir == componentsGroup.getSelectedToggle()) {
+            if(transitionSelected != null){
+                handleFranchisementMouseClick(mouseEvent);
+            }
+            graphMarquage.getChildren().clear();
+            MarquageComponent mc = new MarquageComponent(petriNet.getCurrentMarquage(), 10 , 10);
+            graphMarquage.getChildren().add(mc);
+
+        }
+
+
+
         //System.out.println(petriNetPane.getChildren());
+    }
+
+    /**
+     * Permet de mettre à jour les couleur de toute les transition
+     * @param simu
+     */
+    private void updateColor(boolean simu){
+        for (Node child: petriNetPane.getChildren()){
+            if(child instanceof TransitionComponent){
+                ((TransitionComponent) child).updateColor(simu);
+            }
+        }
     }
 
     private void LeftMouseClicked(MouseEvent mouseEvent) {
@@ -116,6 +157,11 @@ public class Controller {
         lastArc = null;
     }
 
+
+    /**
+     * Ajoute un token sur la place selectionner
+     * @param mouseEvent
+     */
     private void handleAddTokenMouseClick(MouseEvent mouseEvent){
         Token t = new Token();
         t.setCurrentPlace(placeSelected.getPlace());
@@ -126,6 +172,28 @@ public class Controller {
         //System.out.println(petriNet.getCurrentMarquage());
     }
 
+    /**
+     * Permet de franchir la transition selectionner
+     * @param mouseEvent
+     */
+    private void handleFranchisementMouseClick(MouseEvent mouseEvent){
+        Transition t = transitionSelected.getTransition();
+        if(!petriNet.franchir(t)) return;
+        for (ArcPostComponent apc : transitionSelected.getArcPosts()) {
+                apc.getPlace().update();
+        }
+        for (ArcPreComponent apc : transitionSelected.getArcPres()) {
+            apc.getPlace().update();
+        }
+        transitionSelected.updateColor(true);
+        transitionSelected = null;
+        System.out.println(petriNet.getCurrentMarquage());
+    }
+
+    /**
+     * Permet de retirer un token sur une place selectionner
+      * @param mouseEvent
+     */
     private void handleRemoveTokenMouseClick(MouseEvent mouseEvent){
         if (placeSelected.getPlace().getNbJetons() >0){
             Token t = placeSelected.getPlace().getTokens().get(placeSelected.getPlace().getNbJetons()-1);
