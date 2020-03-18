@@ -9,6 +9,12 @@ public class Transition extends PetriObject {
     private Set<ArcPost> arcPosts;
     private Set<ArcPre> arcPres;
 
+    public Transition(Transition t) {
+        this.arcPosts = new HashSet<>(t.arcPosts);
+        this.arcPres = new HashSet<>(t.arcPres);
+        this.id = t.id;
+        this.description = t.description;
+    }
 
     public Transition() {
         super();
@@ -27,12 +33,12 @@ public class Transition extends PetriObject {
     }
 
 
-    public boolean addArcPre(ArcPre arcPre){
+    public boolean addArcPre(ArcPre arcPre) {
 
         return arcPres.add(arcPre);
     }
 
-    public boolean removeArcPre(ArcPre arcPre){
+    public boolean removeArcPre(ArcPre arcPre) {
 
         return arcPres.remove(arcPre);
     }
@@ -41,17 +47,20 @@ public class Transition extends PetriObject {
         return arcPosts;
     }
 
+    public boolean isFranchissable() {
+        for (ArcPre arcPre : this.getArcPres()) {
+            if (arcPre.getPlaceO().getNbJetons() < arcPre.getPoids()) {
+//                System.out.println(arcPre.getPlaceO().getNbJetons());
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     public Set<ArcPre> getArcPres() {
         return arcPres;
     }
 
-    public boolean isFranchissable() {
-        for (ArcPre arcPre : this.getArcPres()){
-            if (arcPre.getPlaceO().getNbJetons() < arcPre.getPoids()){
-                System.out.println(arcPre.getPlaceO().getNbJetons());
-                return false;
-            }
-        }
-        return true;
-    }
+
 }

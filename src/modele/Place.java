@@ -1,16 +1,28 @@
 package modele;
 
 import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 
 public class Place extends PetriObject {
     private static int LAST_PLACE_CREATED = 0;
-    private Set<Token> tokens;
+    private List<Token> tokens;
 
     public Place() {
         super();
-        this.tokens = new HashSet<>();
+        this.tokens = new LinkedList<Token>();
         this.description = "P" + (++LAST_PLACE_CREATED);
+    }
+    public Place(String description){
+        this();
+        this.description = description;
+    }
+
+    public Place(Place place){
+        this.id = place.id;
+        this.tokens = new LinkedList<>(place.tokens);
+        this.description = place.description;
     }
 
     public int getNbJetons() {
@@ -29,7 +41,11 @@ public class Place extends PetriObject {
         return this.tokens.remove(t);
     }
 
-    public Set<Token> getTokens() {
+    public void viderPlace(){
+        this.tokens = new LinkedList<>();
+    }
+
+    public List<Token> getTokens() {
         return tokens;
     }
 
