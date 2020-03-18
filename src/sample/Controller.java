@@ -37,6 +37,8 @@ public class Controller {
     }
 
 
+
+
     public void MouseDragged(MouseEvent mouseEvent) {
         if (this.dragging && (radioEdition == componentsGroup.getSelectedToggle() || radioArc == componentsGroup.getSelectedToggle())) {
             this.placeSelected = null;
@@ -52,6 +54,14 @@ public class Controller {
             }
             draggingComponent.setX((int) mouseEvent.getX());
             draggingComponent.setY((int) mouseEvent.getY());
+        }
+    }
+
+    public void franchirupdate(MouseEvent mouseEvent){
+        if (radioFranchir.isSelected()){
+            updateColor(true);
+        }else{
+            updateColor(false);
         }
     }
 
@@ -101,13 +111,23 @@ public class Controller {
             }
         }
         if (radioFranchir == componentsGroup.getSelectedToggle()) {
-            //handlePlaceMouseClick(mouseEvent);
             if(transitionSelected != null){
                 handleFranchisementMouseClick(mouseEvent);
             }
+
         }
 
+
+
         //System.out.println(petriNetPane.getChildren());
+    }
+
+    private void updateColor(boolean simu){
+        for (Node child: petriNetPane.getChildren()){
+            if(child instanceof TransitionComponent){
+                ((TransitionComponent) child).updateColor(simu);
+            }
+        }
     }
 
     private void LeftMouseClicked(MouseEvent mouseEvent) {
@@ -143,6 +163,7 @@ public class Controller {
         for (ArcPreComponent apc : transitionSelected.getArcPres()) {
             apc.getPlace().update();
         }
+        transitionSelected.updateColor(true);
         transitionSelected = null;
         System.out.println(petriNet.getCurrentMarquage());
     }

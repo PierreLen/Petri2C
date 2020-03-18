@@ -54,9 +54,7 @@ public class Transition extends PetriObject {
                 return false;
             }
         }
-        if(this.getArcPosts().size() ==0){
-            return false;
-        }
+
         return true;
     }
 
