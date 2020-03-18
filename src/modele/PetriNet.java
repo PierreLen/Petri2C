@@ -24,6 +24,9 @@ public class PetriNet {
     }
 
     public void restore(Map<Place, Integer> dumpMap) {
+        System.out.println("RESTORE !!!");
+        System.out.println(getCurrentMarquage());
+        System.out.println(dumpMap);
         ArrayList<Token> tokenList = new ArrayList<Token>(this.tokens);
         int globalIndex = 0;
         for (Place place : dumpMap.keySet()) {
@@ -31,6 +34,7 @@ public class PetriNet {
             for (int i = 0; i < dumpMap.get(place); i++) {
                 try {
                     tokenList.get(globalIndex).setCurrentPlace(place);
+                    place.addToken(tokenList.get(globalIndex));
                 } catch (IndexOutOfBoundsException e) {
                     Token t = new Token();
                     t.setCurrentPlace(place);
@@ -40,6 +44,9 @@ public class PetriNet {
                 globalIndex++;
             }
         }
+        System.out.println(getCurrentMarquage());
+        System.out.println("END RESTORE \n\n\n");
+
     }
 
     public Map<Place, Integer> dumpState() {
@@ -184,19 +191,17 @@ public class PetriNet {
         if (!t.isFranchissable())
             return false;
 
-
+//        int indexGlobal
         for (ArcPre arcPre : t.getArcPres()) {
-            for (Token token : arcPre.getPlaceO().getTokens()){
+            for (Token token : arcPre.getPlaceO().getTokens()) {
                 for (int i = 0; i < arcPre.getPoids(); i++) {
                     lTokens.add(token);
                 }
-                for (int i = 0; i < arcPre.getPoids(); i++) {
-                    arcPre.getPlaceO().getTokens().remove(token);
-                }
+
             }
-
-            System.out.println(arcPre.getPlaceO().getTokens());
-
+            for (int i = 0; i < arcPre.getPoids(); i++) {
+                arcPre.getPlaceO().getTokens().removeAll(lTokens);
+            }
         }
         //System.out.println(lTokens);
         for (ArcPost arcPost : t.getArcPosts()) {
@@ -207,6 +212,7 @@ public class PetriNet {
                     Token tempToken = new Token();
                     tempToken.setCurrentPlace(arcPost.getPlaceDest());
                     arcPost.getPlaceDest().getTokens().add(tempToken);
+                    this.tokens.add(tempToken);
                 }
             }
 

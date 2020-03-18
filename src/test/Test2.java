@@ -2,6 +2,9 @@ package test;
 
 import modele.*;
 
+import java.util.Map;
+import java.util.Set;
+
 public class Test2 {
 
     public static void main(String[] args) {
@@ -33,7 +36,13 @@ public class Test2 {
                 arcPost1, arcPost2, arcPost3,
                 arcPre1, arcPre2, arcPre3);
         GraphMarquage graphMarquage = new GraphMarquage(pn);
-        System.out.println(graphMarquage.getGrapheDeMarquage());
+
+        final Map<Marquage, Set<Marquage>> grapheDeMarquage = graphMarquage.getGrapheDeMarquage();
+        for (Marquage marquage : grapheDeMarquage.keySet()) {
+            System.out.println(marquage);
+            System.out.println("\t" + grapheDeMarquage.get(marquage));
+        }
+//        System.out.println(graphMarquage.getGrapheDeMarquage());
         System.out.println("End");
     }
 

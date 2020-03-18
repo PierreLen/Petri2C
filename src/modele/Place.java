@@ -42,10 +42,10 @@ public class Place extends PetriObject {
     }
 
     public void viderPlace(){
-        this.tokens = new HashSet<>();
+        this.tokens = new LinkedList<>();
     }
 
-    public Set<Token> getTokens() {
+    public List<Token> getTokens() {
         return tokens;
     }
 

@@ -47,7 +47,6 @@ public class Test3 {
         );
 
         p1.addToken(token1);
-
         GraphMarquage graphMarquage = new GraphMarquage(pn);
         final Map<Marquage, Set<Marquage>> grapheDeMarquage = graphMarquage.getGrapheDeMarquage();
         for (Marquage marquage : grapheDeMarquage.keySet()) {
