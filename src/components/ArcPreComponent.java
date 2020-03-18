@@ -79,4 +79,8 @@ public class ArcPreComponent extends Parent {
                 (double) transition.getY() - 12);
         this.getChildren().add(triangle);
     }
+
+    public PlaceComponent getPlace() {
+        return place;
+    }
 }

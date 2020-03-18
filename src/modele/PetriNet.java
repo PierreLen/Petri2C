@@ -156,16 +156,21 @@ public class PetriNet {
         if (!t.isFranchissable())
             return false;
 
-        for (ArcPre arcPre : t.getArcPres()) {
-            Iterator<Token> it = arcPre.getPlaceO().getTokens().iterator();
-            for (int i = 0; i < arcPre.getPoids(); i++) {
-                lTokens.add(it.next());
-            }
-            for (int i = 0; i < arcPre.getPoids(); i++) {
-                arcPre.getPlaceO().getTokens().remove(lTokens.get(i));
-            }
-        }
 
+        for (ArcPre arcPre : t.getArcPres()) {
+            for (Token token : arcPre.getPlaceO().getTokens()){
+                for (int i = 0; i < arcPre.getPoids(); i++) {
+                    lTokens.add(token);
+                }
+                for (int i = 0; i < arcPre.getPoids(); i++) {
+                    arcPre.getPlaceO().getTokens().remove(token);
+                }
+            }
+
+            System.out.println(arcPre.getPlaceO().getTokens());
+
+        }
+        //System.out.println(lTokens);
         for (ArcPost arcPost : t.getArcPosts()) {
             for (int i = 0; i < arcPost.getPoids(); i++) {
                 if (!lTokens.isEmpty()) {

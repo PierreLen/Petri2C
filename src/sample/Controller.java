@@ -19,6 +19,7 @@ public class Controller {
     public RadioButton radioTransition;
     public RadioButton radioArc;
     public RadioButton radioToken;
+    public RadioButton radioFranchir;
     public Pane petriNetPane;
     public Label labelPosition;
     public RadioButton radioEdition;
@@ -37,7 +38,7 @@ public class Controller {
 
 
     public void MouseDragged(MouseEvent mouseEvent) {
-        if (this.dragging) {
+        if (this.dragging && (radioEdition == componentsGroup.getSelectedToggle() || radioArc == componentsGroup.getSelectedToggle())) {
             this.placeSelected = null;
             this.transitionSelected = null;
             for (Node child : petriNetPane.getChildren()) {
@@ -99,6 +100,13 @@ public class Controller {
                 handleAddTokenMouseClick(mouseEvent);
             }
         }
+        if (radioFranchir == componentsGroup.getSelectedToggle()) {
+            //handlePlaceMouseClick(mouseEvent);
+            if(transitionSelected != null){
+                handleFranchisementMouseClick(mouseEvent);
+            }
+        }
+
         //System.out.println(petriNetPane.getChildren());
     }
 
@@ -124,6 +132,19 @@ public class Controller {
         placeSelected.update();
         placeSelected = null;
         //System.out.println(petriNet.getCurrentMarquage());
+    }
+
+    private void handleFranchisementMouseClick(MouseEvent mouseEvent){
+        Transition t = transitionSelected.getTransition();
+        petriNet.franchir(t);
+        for (ArcPostComponent apc : transitionSelected.getArcPosts()) {
+                apc.getPlace().update();
+        }
+        for (ArcPreComponent apc : transitionSelected.getArcPres()) {
+            apc.getPlace().update();
+        }
+        transitionSelected = null;
+        System.out.println(petriNet.getCurrentMarquage());
     }
 
     private void handleRemoveTokenMouseClick(MouseEvent mouseEvent){
