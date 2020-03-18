@@ -20,6 +20,34 @@ public class PetriNet {
         this.places = new HashSet<>(pn.places);
         this.transitions = new HashSet<>(pn.transitions);
         this.incidenceMatrix = pn.incidenceMatrix;
+
+    }
+
+    public void restore(Map<Place, Integer> dumpMap) {
+        ArrayList<Token> tokenList = new ArrayList<Token>(this.tokens);
+        int globalIndex = 0;
+        for (Place place : dumpMap.keySet()) {
+            place.viderPlace();
+            for (int i = 0; i < dumpMap.get(place); i++) {
+                try {
+                    tokenList.get(globalIndex).setCurrentPlace(place);
+                } catch (IndexOutOfBoundsException e) {
+                    Token t = new Token();
+                    t.setCurrentPlace(place);
+                    this.tokens.add(t);
+                    place.addToken(t);
+                }
+                globalIndex++;
+            }
+        }
+    }
+
+    public Map<Place, Integer> dumpState() {
+        Map<Place, Integer> dumpMap = new HashMap<>();
+        for (Place place : places) {
+            dumpMap.put(place, place.getNbJetons());
+        }
+        return dumpMap;
     }
 
     public PetriNet() {
