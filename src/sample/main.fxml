@@ -20,6 +20,7 @@
                 <RadioButton fx:id="radioToken" text="Token" toggleGroup="$componentsGroup" />
                 <RadioButton fx:id="radioFranchir" onMouseClicked="#franchirupdate" text="Franchir" toggleGroup="$componentsGroup" />
                 <Label fx:id="labelPosition" />
+                <Button onMouseClicked="#openMarquage" text="Voir le graphe de marquage"/>
             </VBox>
          <Pane fx:id="graphMarquage" layoutY="200.0" prefHeight="200.0" prefWidth="175.0" />
         </AnchorPane>
