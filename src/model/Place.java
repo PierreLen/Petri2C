@@ -47,7 +47,9 @@ public class Place extends PetriNetComponent {
         });
     }
 
-
+    /**
+     * Met a jour les éléments graphiques de la place
+     */
     public void update() {
         this.getChildren().clear();
         this.getChildren().add(getBackgroundCircle());
@@ -93,6 +95,9 @@ public class Place extends PetriNetComponent {
         return tokens;
     }
 
+    /**
+     * Retire tous les tokens de la place
+     */
     public void viderPlace() {
         this.tokens = new ArrayList<>();
     }

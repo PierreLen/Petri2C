@@ -25,7 +25,8 @@ public class Arc extends PetriNetComponent {
     }
 
     /**
-     * Ce constructeur permet de dessiner les arcs temporaires qui n'ont pas de destination
+     * Ce constructeur permet de dessiner les arcs temporaires qui n'ont pas de destination Il ne PERMET PAS de
+     * spécifier un poids
      *
      * @param xFrom le x de l'origine
      * @param yFrom le y de l'origine
@@ -46,13 +47,13 @@ public class Arc extends PetriNetComponent {
             moveTo.setX(xFrom);
             moveTo.setY(yFrom + 3);
             // si on ne retire pas quelques pixels, le click ne se déclenche pas sur les places/transistions
-            lineTo.setX(xTo-3);
-            lineTo.setY(yTo-3);
+            lineTo.setX(xTo - 3);
+            lineTo.setY(yTo - 3);
         } else {
             moveTo.setX(xFrom);
             moveTo.setY(yFrom + Place.getBaseRadius());
-            lineTo.setX(xTo+3);
-            lineTo.setY(yTo+3);
+            lineTo.setX(xTo + 3);
+            lineTo.setY(yTo + 3);
         }
         path.getElements().add(moveTo);
         path.getElements().add(lineTo);

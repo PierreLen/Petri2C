@@ -25,6 +25,9 @@ public class ArcPost extends Arc {
         update();
     }
 
+    /**
+     * Met a jour les éléments graphiques de l'arc
+     */
     public void update() {
         this.getChildren().clear();
         Path path = new Path();

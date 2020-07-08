@@ -24,20 +24,22 @@ public class DrawingZone {
     private Transition selectedTransition;
     private Arc lastArc;
     /**
-     * on pourrait le mettre dans le controlleur principal mais ça restreidrait à un seul réseau géré par l'application à la fois
+     * on pourrait le mettre dans le controlleur principal mais ça restreidrait à un seul réseau géré par l'application
+     * à la fois
      */
     private PetriNet petriNet;
 
-
+    /**
+     * Méthode appelée après la création de la scene Javafx remplace le constructeur
+     */
     public void initialize() {
         petriNet = new PetriNet();
     }
 
     /**
-     * Set le controller principal pour accès.
-     * Peut être le mettre dans une interface ou dans une classe à hériter
+     * Set le controller principal pour accès. Peut être le mettre dans une interface ou dans une classe à hériter
      *
-     * @param mainController
+     * @param mainController le controller principal de l'application
      */
     public void setMainController(Controller mainController) {
         this.mainController = mainController;
@@ -46,7 +48,7 @@ public class DrawingZone {
     /**
      * Permet principalement de gérer le placement de nouveaux éléments
      *
-     * @param mouseEvent l'event créé par le click
+     * @param mouseEvent l'évent créé par le click
      */
     public void MouseClicked(MouseEvent mouseEvent) {
         // Clic droit pour annuler
@@ -80,7 +82,7 @@ public class DrawingZone {
     /**
      * Permet de déplacer les éléments du réseau de Petri
      *
-     * @param mouseEvent
+     * @param mouseEvent l'évent créé par le drag
      */
     public void MouseDragged(MouseEvent mouseEvent) {
         dragging = true;
@@ -89,7 +91,7 @@ public class DrawingZone {
     /**
      * Permet d'afficher les arcs en train d'être crées
      *
-     * @param mouseEvent
+     * @param mouseEvent l'évent créé par le mouseMove
      */
     public void MouseMove(MouseEvent mouseEvent) {
         if (lastArc != null)
@@ -106,6 +108,11 @@ public class DrawingZone {
         }
     }
 
+    /**
+     * Crée un objet Place et lui ajoute tous ses écouteurs d'événements, puis l'ajoute à la fenêtre graphique
+     *
+     * @param mouseEvent l'évent créé par le click
+     */
     private void createPlace(MouseEvent mouseEvent) {
         Place place = new Place(
                 (int) mouseEvent.getX(),
@@ -151,6 +158,11 @@ public class DrawingZone {
         petriNet.addPetriObject(place);
     }
 
+    /**
+     * Crée un objet Transition et lui ajoute tous ses écouteurs d'événements, puis l'ajoute à la fenetre graphique
+     *
+     * @param mouseEvent l'évent créé par le click
+     */
     private void createTransition(MouseEvent mouseEvent) {
         Transition transition = new Transition(
                 (int) mouseEvent.getX(),
@@ -192,6 +204,9 @@ public class DrawingZone {
         petriNet.addPetriObject(transition);
     }
 
+    /**
+     * Annule toute création d'arc en cours en remmant à zéro les variables temporaires de création
+     */
     private void resetArcCreation() {
         selectedPlace = null;
         selectedTransition = null;
@@ -199,6 +214,12 @@ public class DrawingZone {
         lastArc = null;
     }
 
+    /**
+     * Met a jour la position des arcs de la fenetre graphique pour qu'ils "collent" à leurs places et transitions
+     * respectives
+     * <p>
+     * Pourrait causer des problèmes en cas d'arcs nombreuxs
+     */
     private void updateArcs() {
         for (Node child : petriNetPane.getChildren()) {
             if (child instanceof ArcPost) {
@@ -211,7 +232,9 @@ public class DrawingZone {
     }
 
     /**
-     * @param shouldColor
+     * Met a jour toutes les transitions et leur demande de se colorer en fonction de leur franchissabilité
+     *
+     * @param shouldColor si la transition doit se colorer ou rester noire
      */
     public void colorizePlaces(boolean shouldColor) {
         for (Transition transition : petriNet.getTransitions()) {

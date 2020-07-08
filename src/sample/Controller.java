@@ -38,7 +38,10 @@ public class Controller {
         this.currentRadio = PetriMenuRadioButtons.PLACE;
     }
 
-
+    /**
+     * Génère la fenêtre avec le graph de marquage
+     * @param mouseEvent
+     */
     public void openMarquage(MouseEvent mouseEvent) {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("grapheDeMarquage/grapheDeMarquage.fxml"));
         Stage stage = new Stage(StageStyle.DECORATED);

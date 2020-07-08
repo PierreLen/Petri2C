@@ -35,7 +35,7 @@ public class PetriMenu extends VBox {
      * Set le controller principal pour accès.
      * Peut être le mettre dans une interface ou dans une classe à hériter
      *
-     * @param mainController
+     * @param mainController le controller principal de l'application
      */
     public void setMainController(Controller mainController) {
         this.mainController = mainController;

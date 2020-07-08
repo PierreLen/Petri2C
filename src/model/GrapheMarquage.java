@@ -21,7 +21,6 @@ public class GrapheMarquage {
     }
 
     /**
-     *
      * @param net pas convaincu par le paramètre exterieur
      */
     public void remplirGraphDeMarquage(PetriNet net) {
@@ -30,7 +29,7 @@ public class GrapheMarquage {
         if (!grapheDeMarquage.containsKey(currentMarquage))
             grapheDeMarquage.put(currentMarquage, marquages);
         else return;
-        Set<Transition> transitionsFranchissables= net.getTransitionsFranchissables();
+        Set<Transition> transitionsFranchissables = net.getTransitionsFranchissables();
         Marquage dump = net.getCurrentMarquage();
         for (Transition transitionsFranchissable : transitionsFranchissables) {
             net.franchir(transitionsFranchissable);

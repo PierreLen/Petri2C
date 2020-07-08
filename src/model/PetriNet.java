@@ -46,6 +46,13 @@ public class PetriNet {
         }
     }
 
+    /**
+     * Retire un objet du réseau de pétri
+     *
+     * @param petriObject l'objet à retirer
+     *
+     * @return true si l'objet est retiré, false sinon
+     */
     public boolean removePetriObject(PetriNetComponent petriObject) {
         if (petriObject instanceof ArcPre) {
             return arcPres.remove(petriObject);

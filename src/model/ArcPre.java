@@ -27,6 +27,9 @@ public class ArcPre extends Arc {
         this.update();
     }
 
+    /**
+     * Met a jour les éléments graphiques de l'arc
+     */
     public void update() {
         this.getChildren().clear();
         this.xFrom = origine.getX();
@@ -57,7 +60,6 @@ public class ArcPre extends Arc {
                 (double) destination.getY() - 12);
         this.getChildren().add(triangle);
     }
-
 
     public Place getOrigine() {
         return origine;
