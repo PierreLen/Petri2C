@@ -58,7 +58,6 @@ public class PetriMenu extends VBox {
         this.PetriMenuToggleGroup.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
             @Override
             public void changed(ObservableValue<? extends Toggle> observableValue, Toggle toggle, Toggle t1) {
-                System.out.println(t1);
                 mainController.setCurrentRadio((PetriMenuRadioButtons) t1.getUserData());
             }
         });
@@ -75,7 +74,4 @@ public class PetriMenu extends VBox {
 
     }
 
-    public void printHello() {
-        System.out.println("Hello !!");
-    }
 }

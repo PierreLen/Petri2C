@@ -1,7 +1,5 @@
 package model;
 
-import modele.PetriObject;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -104,7 +102,6 @@ public class PetriNet {
                 arcPre.getOrigine().getTokens().removeAll(lTokens);
             }
         }
-        //System.out.println(lTokens);
         for (ArcPost arcPost : t.getArcPosts()) {
             for (int i = 0; i < arcPost.getPoids(); i++) {
                 if (!lTokens.isEmpty()) {
@@ -149,5 +146,11 @@ public class PetriNet {
         }
     }
 
+    public Set<Transition> getTransitions() {
+        return transitions;
+    }
 
+    public Set<Place> getPlaces() {
+        return places;
+    }
 }

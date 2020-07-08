@@ -11,17 +11,6 @@
             <VBox prefHeight="200.0">
                 <fx:include source="editorMenu/PetriMenu.fxml" fx:id="petriMenu"/>
                 <Label text="Ajout"/>
-
-                <!--<RadioButton fx:id="radioPlace" text="Place">
-                    <toggleGroup>
-                        <ToggleGroup fx:id="componentsGroup"/>
-                    </toggleGroup>
-                </RadioButton>
-                <RadioButton fx:id="radioTransition" text="Transition" toggleGroup="$componentsGroup"/>
-                <RadioButton fx:id="radioArc" text="Arc" toggleGroup="$componentsGroup"/>
-                <RadioButton fx:id="radioEdition" text="Edition" toggleGroup="$componentsGroup"/>
-                <RadioButton fx:id="radioToken" text="Token" toggleGroup="$componentsGroup"/>
-                <RadioButton fx:id="radioFranchir" onMouseClicked="#franchirupdate" text="Franchir" toggleGroup="$componentsGroup"/>-->
                 <Label fx:id="labelPosition"/>
                 <Button onMouseClicked="#openMarquage" text="Voir le graphe de marquage"/>
             </VBox>
@@ -30,12 +19,5 @@
 
         <fx:include source="editorMain/drawingZone.fxml" fx:id="drawingZone"/>
 
-       <!-- <AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="160.0" prefWidth="100.0"
-                    xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
-            <Pane fx:id="petriNetPane" onMouseClicked="#MouseClicked" onMouseDragged="#MouseDragged"
-                  onMouseMoved="#MouseMove" prefHeight="398.0" prefWidth="417.0" AnchorPane.bottomAnchor="0.0"
-                  AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
-
-        </AnchorPane>-->
     </items>
 </SplitPane>

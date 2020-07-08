@@ -1,6 +1,5 @@
 package model;
 
-import components.PlaceComponent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
@@ -34,7 +33,7 @@ public class ArcPost extends Arc {
         moveTo.setY(origine.getY() + 3);
         LineTo lineTo = new LineTo();
         lineTo.setX(destination.getX());
-        lineTo.setY(destination.getY() - PlaceComponent.getBaseRadius());
+        lineTo.setY(destination.getY() - Place.getBaseRadius());
         path.getElements().add(moveTo);
         path.getElements().add(lineTo);
         path.setFill(Color.BLACK);
@@ -45,11 +44,11 @@ public class ArcPost extends Arc {
         Polygon triangle = new Polygon();
         triangle.getPoints().addAll(
                 (double) destination.getX(),
-                (double) destination.getY() - PlaceComponent.getBaseRadius(),
+                (double) destination.getY() - Place.getBaseRadius(),
                 (double) destination.getX() - 6,
-                (double) destination.getY() - 12 - PlaceComponent.getBaseRadius(),
+                (double) destination.getY() - 12 - Place.getBaseRadius(),
                 (double) destination.getX() + 6,
-                (double) destination.getY() - 12 - PlaceComponent.getBaseRadius());
+                (double) destination.getY() - 12 - Place.getBaseRadius());
         this.getChildren().add(triangle);
     }
 

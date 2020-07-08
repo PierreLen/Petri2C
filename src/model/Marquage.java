@@ -46,4 +46,10 @@ public class Marquage {
         return places;
     }
 
+    @Override
+    public String toString() {
+        return "Marquage{" + places +
+                '}';
+    }
+
 }

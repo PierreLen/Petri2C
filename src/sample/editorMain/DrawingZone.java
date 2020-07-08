@@ -30,7 +30,6 @@ public class DrawingZone {
 
 
     public void initialize() {
-        petriNetPane.getChildren().add(new Place(200, 200, this));
         petriNet = new PetriNet();
     }
 
@@ -60,7 +59,6 @@ public class DrawingZone {
             dragging = false;
             return;
         }
-        System.out.println("Click !!!");
         switch (mainController.getCurrentRadio()) {
             case PLACE:
                 createPlace(mouseEvent);
@@ -117,7 +115,6 @@ public class DrawingZone {
         place.setOnMouseClicked(me -> {
             // consume() permet d'éviter le bubble d'évent un peu comme prevent default en js
             me.consume(); // pour éviter de mettre une place
-            System.out.println(place.getDescription() + " Clicked !");
             switch (mainController.getCurrentRadio()) {
                 case ARC:
                     if (selectedPlace == null) {
@@ -135,7 +132,7 @@ public class DrawingZone {
                     if (me.getButton() == MouseButton.SECONDARY) {
                         Token t = place.removeToken();
                         petriNet.removePetriObject(t);
-                    } else if (me.getButton() == MouseButton.PRIMARY){
+                    } else if (me.getButton() == MouseButton.PRIMARY) {
                         Token t = new Token();
                         place.addToken(t);
                         petriNet.addPetriObject(t);
@@ -166,18 +163,29 @@ public class DrawingZone {
         });
         transition.setOnMouseClicked(me -> {
             me.consume();
-            if (mainController.getCurrentRadio() == PetriMenuRadioButtons.ARC) {
-                if (selectedTransition == null) {
-                    selectedTransition = transition;
-                }
-                if (selectedPlace != null) {
-                    // on crée l'arc pre
-                    ArcPre arcPre = new ArcPre(selectedPlace, selectedTransition);
-                    petriNet.addPetriObject(arcPre);
-                    this.petriNetPane.getChildren().add(arcPre);
-                    selectedTransition.addArcPre(arcPre);
-                    resetArcCreation();
-                }
+            switch (mainController.getCurrentRadio()) {
+                case ARC:
+                    if (selectedTransition == null) {
+                        selectedTransition = transition;
+                    }
+                    if (selectedPlace != null) {
+                        // on crée l'arc pre
+                        ArcPre arcPre = new ArcPre(selectedPlace, selectedTransition);
+                        petriNet.addPetriObject(arcPre);
+                        this.petriNetPane.getChildren().add(arcPre);
+                        selectedTransition.addArcPre(arcPre);
+                        resetArcCreation();
+                    }
+                    break;
+                case FRANCHIR:
+                    petriNet.franchir(transition);
+                    for (Place place : petriNet.getPlaces()) {
+                        place.update();
+                    }
+                    for (Transition petriNetTransition : petriNet.getTransitions()) {
+                        petriNetTransition.updateColor(true);
+                    }
+                    break;
             }
         });
         petriNetPane.getChildren().add(transition);
@@ -202,4 +210,16 @@ public class DrawingZone {
         }
     }
 
+    /**
+     * @param shouldColor
+     */
+    public void colorizePlaces(boolean shouldColor) {
+        for (Transition transition : petriNet.getTransitions()) {
+            transition.updateColor(shouldColor);
+        }
+    }
+
+    public PetriNet getPetriNet() {
+        return petriNet;
+    }
 }

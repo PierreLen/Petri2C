@@ -1,6 +1,5 @@
 package model;
 
-import components.PlaceComponent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
@@ -37,7 +36,7 @@ public class ArcPre extends Arc {
         Path path = new Path();
         MoveTo moveTo = new MoveTo();
         moveTo.setX(origine.getX());
-        moveTo.setY(origine.getY() + PlaceComponent.getBaseRadius());
+        moveTo.setY(origine.getY() + Place.getBaseRadius());
         LineTo lineTo = new LineTo();
         lineTo.setX(destination.getX());
         lineTo.setY(destination.getY());

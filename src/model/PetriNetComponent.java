@@ -57,4 +57,9 @@ public abstract class PetriNetComponent extends Parent {
         this.y = y;
         this.setTranslateY(y);
     }
+
+    @Override
+    public String toString() {
+        return description;
+    }
 }

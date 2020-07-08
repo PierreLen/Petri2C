@@ -3,17 +3,14 @@ package sample.grapheDeMarquage;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.TableColumn;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
-import modele.GraphMarquage;
-import modele.Marquage;
-import modele.PetriNet;
-
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.VBox;
+import model.GrapheMarquage;
+import model.Marquage;
+import model.PetriNet;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -36,7 +33,7 @@ public class GraphDeMarquageController {
     }
 
     public void showGraph() {
-        GraphMarquage graphMarquage = new GraphMarquage(this.petriNet);
+        GrapheMarquage graphMarquage = new GrapheMarquage(this.petriNet);
         final Map<Marquage, Set<Marquage>> grapheDeMarquage = graphMarquage.getGrapheDeMarquage();
 
         ArrayList<MarquageModel> tableData = new ArrayList<>();

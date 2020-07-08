@@ -35,14 +35,13 @@ public class Transition extends PetriNetComponent {
     }
 
 
-
-
     /**
      * Change la couleur de la transition en fonction de sa franchissabilité.
      *
      * @param shouldBeColored booléen déterminant si la transition doit être colorée ou non
      */
     public void updateColor(boolean shouldBeColored) {
+        this.getChildren().remove(this.background);
         if (shouldBeColored) {
             if (this.isFranchissable()) {
                 this.background = this.getBackground(Color.GREEN);
@@ -52,6 +51,7 @@ public class Transition extends PetriNetComponent {
         } else {
             this.background = this.getBackground(Color.BLACK);
         }
+        this.getChildren().add(this.background);
     }
 
 
