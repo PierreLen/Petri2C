@@ -44,6 +44,6 @@ public class Test1 {
         //System.out.println(M1.equals(M2));
         GraphMarquage graphMarquage = new GraphMarquage(pn);
         System.out.println(graphMarquage.getGrapheDeMarquage());
-        System.out.println(pn.getGraphMarquage(pn));
+//        System.out.println(pn.getGraphMarquage(pn));
     }
 }

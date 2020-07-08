@@ -1,6 +1,5 @@
 package modele;
 
-//import com.sun.xml.internal.bind.v2.TODO;
 
 import java.util.*;
 
@@ -127,15 +126,15 @@ public class PetriNet {
         return incidenceMatrix;
     }
 
-    public Map<Marquage, Set<Marquage>> getGraphMarquage(PetriNet petriNet) {
-        Map<Marquage, Set<Marquage>> grapheMarquage = new HashMap<>();
-        grapheMarquage = petriNet.getGrapheMarquageSetMap(grapheMarquage);
-        return grapheMarquage;
-    }
+//    public Map<Marquage, Set<Marquage>> getGraphMarquage(PetriNet petriNet) {
+//        Map<Marquage, Set<Marquage>> grapheMarquage = new HashMap<>();
+//        grapheMarquage = petriNet.getGrapheMarquageSetMap(grapheMarquage);
+//        return grapheMarquage;
+//    }
 
     //TODO ajouter des la récursivité
     // TODO ajouter la verification borné ou non avec la classe marquage
-    private Map<Marquage, Set<Marquage>> getGrapheMarquageSetMap(Map<Marquage, Set<Marquage>> graphe) {
+ /*   private Map<Marquage, Set<Marquage>> getGrapheMarquageSetMap(Map<Marquage, Set<Marquage>> graphe) {
         PetriNet pn = this;
         for (Transition t : this.getTransitionsFranchissable()) {
             Marquage prevMarquage = pn.getCurrentMarquage();
@@ -164,7 +163,7 @@ public class PetriNet {
             }
         }
         return graphe;
-    }
+    }*/
 
     public Set<Transition> getTransitionsFranchissable() {
         Set<Transition> setTransition = new HashSet<>();
@@ -225,14 +224,14 @@ public class PetriNet {
         return true;
     }
 
-    private Set<Marquage> getAcces(Transition t) {
+/*    private Set<Marquage> getAcces(Transition t) {
         Set<Marquage> newMarquagesAccesible = new HashSet<>();
         if (this.franchir(t)) {
             newMarquagesAccesible.add(this.getCurrentMarquage());
         }
         return newMarquagesAccesible;
 
-    }
+    }*/
 
     public boolean removePetriObject(PetriObject petriObject) {
         if (petriObject instanceof ArcPre) {

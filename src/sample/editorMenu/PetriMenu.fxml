@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox prefHeight="386.0" prefWidth="231.0" xmlns="http://javafx.com/javafx/10.0.2-internal"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="sample.editorMenu.PetriMenu">
+    <RadioButton text="Place" fx:id="radioPlace">
+        <toggleGroup>
+            <ToggleGroup fx:id="PetriMenuToggleGroup"/>
+        </toggleGroup>
+    </RadioButton>
+    <RadioButton fx:id="radioTransition" text="Transition" toggleGroup="$PetriMenuToggleGroup"/>
+    <RadioButton fx:id="radioArc" text="Arc" toggleGroup="$PetriMenuToggleGroup"/>
+    <RadioButton fx:id="radioEdition" text="Edition" toggleGroup="$PetriMenuToggleGroup"/>
+    <RadioButton fx:id="radioToken" text="Token" toggleGroup="$PetriMenuToggleGroup"/>
+    <RadioButton fx:id="radioFranchir" text="Franchir" toggleGroup="$PetriMenuToggleGroup"/>
+</VBox>

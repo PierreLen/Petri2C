@@ -18,10 +18,6 @@ public class ArcPost extends Arc {
         this.placeDest = placeDest;
     }
 
-//    public ArcPost(ArcPost arcPost){
-//        this.placeDest =
-//    }
-
     public Transition getTransitionO() {
         return transitionO;
     }

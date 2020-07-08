@@ -1,9 +1,9 @@
 package sample;
 
 import components.*;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
@@ -11,13 +11,14 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import modele.*;
+import sample.editorMain.DrawingZone;
+import sample.editorMenu.PetriMenu;
+import sample.editorMenu.PetriMenuRadioButtons;
 import sample.grapheDeMarquage.GraphDeMarquageController;
 
-import javax.xml.transform.sax.SAXSource;
 import java.io.IOException;
 
 public class Controller {
@@ -32,6 +33,8 @@ public class Controller {
     public Pane graphMarquage;
     public Label labelPosition;
     public RadioButton radioEdition;
+    public PetriMenu test;
+//    public VBox petriMenu;
 
     private PetriNet petriNet;
     private PlaceComponent placeSelected;
@@ -41,12 +44,28 @@ public class Controller {
     private PetriObjectComponent draggingComponent;
 
 
+    @FXML
+    PetriMenu petriMenuController;
+
+    @FXML
+    DrawingZone drawingZoneController;
+    private PetriMenuRadioButtons currentRadio;
+
+
+    public void initialize() {
+        petriMenuController.printHello();
+        drawingZoneController.setMainController(this);
+        petriMenuController.setMainController(this);
+        System.out.println(petriMenuController.getSelectedRadio());
+    }
+
     public Controller() {
         petriNet = new PetriNet();
+        this.currentRadio = PetriMenuRadioButtons.PLACE;
     }
 
 
-    public void MouseDragged(MouseEvent mouseEvent) {
+   /* public void MouseDragged(MouseEvent mouseEvent) {
         if (this.dragging && (radioEdition == componentsGroup.getSelectedToggle() || radioArc == componentsGroup.getSelectedToggle())) {
             this.placeSelected = null;
             this.transitionSelected = null;
@@ -62,7 +81,7 @@ public class Controller {
             draggingComponent.setX((int) mouseEvent.getX());
             draggingComponent.setY((int) mouseEvent.getY());
         }
-    }
+    }*/
 
 
     /**
@@ -83,7 +102,7 @@ public class Controller {
      *
      * @param mouseEvent
      */
-    public void MouseMove(MouseEvent mouseEvent) {
+   /* public void MouseMove(MouseEvent mouseEvent) {
         if (componentsGroup.getSelectedToggle() == radioArc) {
             if (lastArc != null) {
                 removeLastArc();
@@ -98,7 +117,7 @@ public class Controller {
             if (lastArc != null)
                 petriNetPane.getChildren().add(lastArc);
         }
-    }
+    }*/
 
     /**
      * Retire l'arc de prévisualisation de la fenetre graphique
@@ -314,5 +333,14 @@ public class Controller {
         controller.showGraph();
         stage.setTitle("graphe de marquage");
         stage.show();
+    }
+
+
+    public void setCurrentRadio(PetriMenuRadioButtons rb) {
+        currentRadio = rb;
+    }
+
+    public PetriMenuRadioButtons getCurrentRadio() {
+        return currentRadio;
     }
 }
