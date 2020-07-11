@@ -50,7 +50,6 @@ public class PetriNet {
      * Retire un objet du réseau de pétri
      *
      * @param petriObject l'objet à retirer
-     *
      * @return true si l'objet est retiré, false sinon
      */
     public boolean removePetriObject(PetriNetComponent petriObject) {
@@ -99,15 +98,12 @@ public class PetriNet {
 
         //        int indexGlobal
         for (ArcPre arcPre : t.getArcPres()) {
-            for (Token token : arcPre.getOrigine().getTokens()) {
-                for (int i = 0; i < arcPre.getPoids(); i++) {
-                    lTokens.add(token);
-                }
 
-            }
             for (int i = 0; i < arcPre.getPoids(); i++) {
-                arcPre.getOrigine().getTokens().removeAll(lTokens);
+                lTokens.add(arcPre.getOrigine().getTokens().get(0));
             }
+
+            arcPre.getOrigine().getTokens().removeAll(lTokens);
         }
         for (ArcPost arcPost : t.getArcPosts()) {
             for (int i = 0; i < arcPost.getPoids(); i++) {
