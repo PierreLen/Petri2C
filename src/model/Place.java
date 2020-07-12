@@ -63,7 +63,7 @@ public class Place extends PetriNetComponent {
         this.getChildren().add(getNbToken());
         // nom de la place
         this.getChildren().add(getPlaceName());
-/*
+
         //TODO : A modifier
         this.setOnMouseDragged(mouseEvent -> {
             this.x += mouseEvent.getX();
@@ -72,7 +72,7 @@ public class Place extends PetriNetComponent {
             this.setTranslateY(this.y);
         });
 
- */
+
     }
 
     /**

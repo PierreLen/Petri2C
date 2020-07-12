@@ -34,6 +34,16 @@ public class Transition extends PetriNetComponent {
         this.getChildren().add(this.getTransitionName());
     }
 
+    public Transition(int x, int y, DrawingZone parentController, String description) {
+        super(x, y, parentController);
+        this.arcPosts = new HashSet<>();
+        this.arcPres = new HashSet<>();
+        this.description = description;
+        ++LAST_TRANSITION_CREATED;
+        this.background = this.getBackground(Color.BLACK);
+        this.getChildren().add(background);
+        this.getChildren().add(this.getTransitionName());
+    }
 
     /**
      * Change la couleur de la transition en fonction de sa franchissabilité.

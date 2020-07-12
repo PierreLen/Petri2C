@@ -184,14 +184,20 @@ public class PetriNet {
     public void fromJSON(DrawingZone crt){
         String doc = "{\"petriNet\": {\"place\":[{\"Description\":\"P2\",\"id\":2,\"X\":292,\"Y\":200},{\"Description\":\"P1\",\"id\":1,\"X\":159,\"Y\":173}],\"Transition\":[{\"Description\":\"T1\",\"id\":3,\"X\":128,\"Y\":298}]}}";
         JSONObject obj = new JSONObject(doc);
-        JSONArray arrayPlace = obj.getJSONObject("petriNet").getJSONArray("place");
-        for(int i =0;i<arrayPlace.length();i++){
-            JSONObject temp = arrayPlace.getJSONObject(i);
+        JSONArray arrayJSON = obj.getJSONObject("petriNet").getJSONArray("place");
+        for(int i =0;i<arrayJSON.length();i++){
+            JSONObject temp = arrayJSON.getJSONObject(i);
             Place pTemp = new Place(temp.getInt("X"),temp.getInt("Y"),crt,temp.getString("Description"));
             System.out.println(pTemp.getX());
-            crt.addPetriNetPaneChild(pTemp);
-            crt.addPetriNet(pTemp);
+            crt.addListenerPlace(pTemp);
             pTemp.update();
+        }
+        arrayJSON = obj.getJSONObject("petriNet").getJSONArray("Transition");
+        for (int i =0; i<arrayJSON.length();i++){
+            JSONObject temp = arrayJSON.getJSONObject(i);
+            Transition tTemp = new Transition(temp.getInt("X"),temp.getInt("Y"),crt,temp.getString("Description"));
+            crt.addListenerTransition(tTemp);
+            tTemp.updateColor(false);
         }
 
     }
