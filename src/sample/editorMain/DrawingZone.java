@@ -61,6 +61,8 @@ public class DrawingZone {
             dragging = false;
             return;
         }
+        System.out.println(petriNet.gettoJSON());
+
         switch (mainController.getCurrentRadio()) {
             case PLACE:
                 createPlace(mouseEvent);
@@ -71,6 +73,7 @@ public class DrawingZone {
             case ARC:
                 break;
             case EDITION:
+                petriNet.fromJSON(this);
                 break;
             case TOKEN:
                 break;
@@ -244,5 +247,13 @@ public class DrawingZone {
 
     public PetriNet getPetriNet() {
         return petriNet;
+    }
+
+    public void addPetriNetPaneChild(Node p){
+        petriNetPane.getChildren().add(p);
+    }
+
+    public void addPetriNet(PetriNetComponent p){
+        petriNet.addPetriObject(p);
     }
 }

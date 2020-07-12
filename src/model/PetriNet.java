@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Set;
+import org.json.*;
+import sample.editorMain.DrawingZone;
 
 public class PetriNet {
 
@@ -155,5 +157,42 @@ public class PetriNet {
 
     public Set<Place> getPlaces() {
         return places;
+    }
+
+    public String gettoJSON (){
+        String json;
+        json = "{" + "\"petriNet\": {\"place\":[";
+
+        int i =0;
+        for(Place p : this.places){
+
+            json += p.toJSon();
+            if (i < this.places.size()-1){
+                json+=",";
+            }
+            i++;
+
+        }
+        json += "],\"Transition\":[";
+        for (Transition t : this.transitions){
+            json += t.toJSon();
+        }
+        json += "]}}";
+        return json;
+    }
+
+    public void fromJSON(DrawingZone crt){
+        String doc = "{\"petriNet\": {\"place\":[{\"Description\":\"P2\",\"id\":2,\"X\":292,\"Y\":200},{\"Description\":\"P1\",\"id\":1,\"X\":159,\"Y\":173}],\"Transition\":[{\"Description\":\"T1\",\"id\":3,\"X\":128,\"Y\":298}]}}";
+        JSONObject obj = new JSONObject(doc);
+        JSONArray arrayPlace = obj.getJSONObject("petriNet").getJSONArray("place");
+        for(int i =0;i<arrayPlace.length();i++){
+            JSONObject temp = arrayPlace.getJSONObject(i);
+            Place pTemp = new Place(temp.getInt("X"),temp.getInt("Y"),crt,temp.getString("Description"));
+            System.out.println(pTemp.getX());
+            crt.addPetriNetPaneChild(pTemp);
+            crt.addPetriNet(pTemp);
+            pTemp.update();
+        }
+
     }
 }

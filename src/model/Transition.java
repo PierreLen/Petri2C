@@ -106,4 +106,11 @@ public class Transition extends PetriNetComponent {
         return arcPosts;
     }
 
+    public String toJSon(){
+        String json;
+        json = "{\"Description\":\"" + this.description + "\",\"id\":" + this.pnId + ",\"X\":" + this.x + ",\"Y\":" + this.y + "}";
+        return json;
+
+    }
+
 }

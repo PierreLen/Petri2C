@@ -48,6 +48,34 @@ public class Place extends PetriNetComponent {
     }
 
     /**
+     * @param x la coordonnée x de la place
+     * @param y la coordonnée y de la place
+     * Utile que pour la recuperation a partir d'un JSON
+     */
+    public Place(int x, int y, DrawingZone controller, String description) {
+        super(x, y, controller);
+        this.description = description ;
+        ++LAST_PLACE_CREATED;
+        this.tokens = new ArrayList<>();
+        // definition du cercle de la place
+        this.getChildren().add(getBackgroundCircle());
+        // texte avec le nombre de jetons
+        this.getChildren().add(getNbToken());
+        // nom de la place
+        this.getChildren().add(getPlaceName());
+/*
+        //TODO : A modifier
+        this.setOnMouseDragged(mouseEvent -> {
+            this.x += mouseEvent.getX();
+            this.y += mouseEvent.getY();
+            this.setTranslateX(this.x);
+            this.setTranslateY(this.y);
+        });
+
+ */
+    }
+
+    /**
      * Met a jour les éléments graphiques de la place
      */
     public void update() {
@@ -114,6 +142,13 @@ public class Place extends PetriNetComponent {
         if (tokens.size() > 0)
             return tokens.remove(tokens.size() - 1);
         return null;
+    }
+
+    public String toJSon(){
+        String json;
+        json = "{\"Description\":\"" + this.description + "\",\"id\":" + this.pnId + ",\"X\":" + this.x + ",\"Y\":" + this.y + "}";
+        return json;
+
     }
 
 }
