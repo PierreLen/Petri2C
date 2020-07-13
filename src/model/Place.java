@@ -143,12 +143,4 @@ public class Place extends PetriNetComponent {
             return tokens.remove(tokens.size() - 1);
         return null;
     }
-
-    public String toJSon(){
-        String json;
-        json = "{\"Description\":\"" + this.description + "\",\"id\":" + this.pnId + ",\"X\":" + this.x + ",\"Y\":" + this.y + "}";
-        return json;
-
-    }
-
 }

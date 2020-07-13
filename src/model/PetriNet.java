@@ -163,28 +163,46 @@ public class PetriNet {
         String json;
         json = "{" + "\"petriNet\": {\"place\":[";
 
-        int i =0;
+        JSONObject petrinet = new JSONObject();
+
+        JSONObject places = new JSONObject();
+        JSONArray arrayPlace = new JSONArray();
         for(Place p : this.places){
-
-            json += p.toJSon();
-            if (i < this.places.size()-1){
-                json+=",";
-            }
-            i++;
+            JSONObject place = new JSONObject();
+            place.put("Description", p.getDescription());
+            place.put("id", p.getPnId());
+            place.put("X", p.getX());
+            place.put("Y",p.getY());
+            arrayPlace.put(place);
 
         }
-        json += "],\"Transition\":[";
-        for (Transition t : this.transitions){
-            json += t.toJSon();
+        places.put("place",arrayPlace);
+
+
+
+        JSONObject transitions = new JSONObject();
+        JSONArray arrayTransition = new JSONArray();
+        for(Transition t : this.transitions){
+            JSONObject transition = new JSONObject();
+            transition.put("Description", t.getDescription());
+            transition.put("id", t.getPnId());
+            transition.put("X", t.getX());
+            transition.put("Y",t.getY());
+            arrayTransition.put(transition);
+
         }
-        json += "]}}";
-        return json;
+        transitions.put("transition",arrayTransition);
+        petrinet.put("petriNet",places).accumulate("petriNet",transitions);
+        return petrinet.toString();
     }
 
     public void fromJSON(DrawingZone crt){
-        String doc = "{\"petriNet\": {\"place\":[{\"Description\":\"P2\",\"id\":2,\"X\":292,\"Y\":200},{\"Description\":\"P1\",\"id\":1,\"X\":159,\"Y\":173}],\"Transition\":[{\"Description\":\"T1\",\"id\":3,\"X\":128,\"Y\":298}]}}";
+        String doc = "{\"petriNet\":[{\"place\":[{\"Description\":\"P1\",\"X\":227,\"Y\":314,\"id\":1},{\"Description\":\"P2\",\"X\":408,\"Y\":335,\"id\":2}]},{\"transition\":[{\"Description\":\"T1\",\"X\":231,\"Y\":483,\"id\":3}]}]}";
+        //String doc = "{\"petriNet\": {\"place\":[{\"Description\":\"P2\",\"id\":2,\"X\":292,\"Y\":200},{\"Description\":\"P1\",\"id\":1,\"X\":159,\"Y\":173}],\"Transition\":[{\"Description\":\"T1\",\"id\":3,\"X\":128,\"Y\":298}]}}";
         JSONObject obj = new JSONObject(doc);
-        JSONArray arrayJSON = obj.getJSONObject("petriNet").getJSONArray("place");
+        System.out.println(obj.toString());
+        System.out.println(obj.getJSONArray("petriNet").get(0));
+        JSONArray arrayJSON = obj.getJSONArray("petriNet").getJSONObject(0).getJSONArray("place");
         for(int i =0;i<arrayJSON.length();i++){
             JSONObject temp = arrayJSON.getJSONObject(i);
             Place pTemp = new Place(temp.getInt("X"),temp.getInt("Y"),crt,temp.getString("Description"));
@@ -192,7 +210,7 @@ public class PetriNet {
             crt.addListenerPlace(pTemp);
             pTemp.update();
         }
-        arrayJSON = obj.getJSONObject("petriNet").getJSONArray("Transition");
+        arrayJSON = obj.getJSONArray("petriNet").getJSONObject(1).getJSONArray("transition");
         for (int i =0; i<arrayJSON.length();i++){
             JSONObject temp = arrayJSON.getJSONObject(i);
             Transition tTemp = new Transition(temp.getInt("X"),temp.getInt("Y"),crt,temp.getString("Description"));
