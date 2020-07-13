@@ -192,12 +192,28 @@ public class PetriNet {
 
         }
         transitions.put("transition",arrayTransition);
-        petrinet.put("petriNet",places).accumulate("petriNet",transitions);
+
+        JSONObject arcPres = new JSONObject();
+        JSONArray arrayArcPre = new JSONArray();
+        for(ArcPre a : this.arcPres){
+            JSONObject arc = new JSONObject();
+            arc.put("id", a.getPnId());
+            arc.put("poids", a.getPoids());
+            arc.put("placeOrigine",a.getOrigine().getDescription());
+            arc.put("TransitionDestination",a.getDestination().getDescription());
+            arrayArcPre.put(arc);
+
+        }
+        arcPres.put("arcPre",arrayArcPre);
+
+
+        petrinet.opt("petriNet");
+        petrinet.put("petriNet",places).accumulate("petriNet",transitions).accumulate("petriNet",arcPres);
         return petrinet.toString();
     }
 
     public void fromJSON(DrawingZone crt){
-        String doc = "{\"petriNet\":[{\"place\":[{\"Description\":\"P1\",\"X\":227,\"Y\":314,\"id\":1},{\"Description\":\"P2\",\"X\":408,\"Y\":335,\"id\":2}]},{\"transition\":[{\"Description\":\"T1\",\"X\":231,\"Y\":483,\"id\":3}]}]}";
+        String doc = "{\"petriNet\":[{\"place\":[{\"Description\":\"P2\",\"X\":326,\"Y\":153,\"id\":1},{\"Description\":\"P1\",\"X\":211,\"Y\":238,\"id\":2}]},{\"transition\":[{\"Description\":\"T1\",\"X\":283,\"Y\":400,\"id\":3}]},{\"arcPre\":[{\"TransitionDestination\":\"T1\",\"poids\":1,\"placeOrigine\":\"P2\",\"id\":198},{\"TransitionDestination\":\"T1\",\"poids\":1,\"placeOrigine\":\"P1\",\"id\":4}]}]}\n";
         //String doc = "{\"petriNet\": {\"place\":[{\"Description\":\"P2\",\"id\":2,\"X\":292,\"Y\":200},{\"Description\":\"P1\",\"id\":1,\"X\":159,\"Y\":173}],\"Transition\":[{\"Description\":\"T1\",\"id\":3,\"X\":128,\"Y\":298}]}}";
         JSONObject obj = new JSONObject(doc);
         System.out.println(obj.toString());
@@ -206,7 +222,7 @@ public class PetriNet {
         for(int i =0;i<arrayJSON.length();i++){
             JSONObject temp = arrayJSON.getJSONObject(i);
             Place pTemp = new Place(temp.getInt("X"),temp.getInt("Y"),crt,temp.getString("Description"));
-            System.out.println(pTemp.getX());
+            //System.out.println(pTemp.getX());
             crt.addListenerPlace(pTemp);
             pTemp.update();
         }
@@ -217,6 +233,40 @@ public class PetriNet {
             crt.addListenerTransition(tTemp);
             tTemp.updateColor(false);
         }
+        arrayJSON = obj.getJSONArray("petriNet").getJSONObject(2).getJSONArray("arcPre");
+        for (int i =0; i<arrayJSON.length();i++){
+            JSONObject temp = arrayJSON.getJSONObject(i);
 
+            ArcPre arcPreTemp = new ArcPre(temp.getInt("poids"),crt.getPetriNet().getPlaceByDescription(temp.getString("placeOrigine")),crt.getPetriNet().getTransitionByDescription(temp.getString("TransitionDestination")));
+            crt.addPetriNet(arcPreTemp);
+            crt.addPetriNetPaneChild(arcPreTemp);
+            crt.getPetriNet().getTransitionByDescription(temp.getString("TransitionDestination")).addArcPre(arcPreTemp);
+            arcPreTemp.update();
+        }
+
+    }
+
+
+    /**
+     * ne prends pas en compte si la place n'existe pas
+     * @param description
+     * @return
+     */
+    private Place getPlaceByDescription(String description){
+        for (Place p : places){
+            if(p.getDescription().equals(description)){
+                return p;
+            }
+        }
+        return null;
+    }
+
+    private Transition getTransitionByDescription(String description){
+        for (Transition t : transitions){
+            if(t.getDescription().equals(description)){
+                return t;
+            }
+        }
+        return null;
     }
 }
