@@ -1,10 +1,13 @@
 package model;
 
+import java.io.*;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Set;
-import org.json.*;
+
+import org.json.JSONObject;
+import org.json.JSONArray;
 import sample.editorMain.DrawingZone;
 
 public class PetriNet {
@@ -160,8 +163,6 @@ public class PetriNet {
     }
 
     public String gettoJSON (){
-        String json;
-        json = "{" + "\"petriNet\": {\"place\":[";
 
         JSONObject petrinet = new JSONObject();
 
@@ -225,17 +226,24 @@ public class PetriNet {
         return petrinet.toString();
     }
 
-    public void fromJSON(DrawingZone crt){
-        String doc = "{\"petriNet\":[{\"place\":[{\"Description\":\"P2\",\"X\":325,\"Y\":143,\"nbToken\":2,\"id\":2},{\"Description\":\"P1\",\"X\":112,\"Y\":128,\"nbToken\":1,\"id\":1},{\"Description\":\"P3\",\"X\":196,\"Y\":416,\"nbToken\":2,\"id\":4},{\"Description\":\"P4\",\"X\":297,\"Y\":512,\"nbToken\":0,\"id\":291}]},{\"transition\":[{\"Description\":\"T1\",\"X\":224,\"Y\":291,\"id\":3}]},{\"arcPre\":[{\"TransitionDestination\":\"T1\",\"poids\":1,\"placeOrigine\":\"P1\",\"id\":150},{\"TransitionDestination\":\"T1\",\"poids\":1,\"placeOrigine\":\"P2\",\"id\":239}]},{\"arcPost\":[{\"poids\":1,\"id\":289,\"placeDestination\":\"P3\",\"TransitionOrigine\":\"T1\"}]}]}\n";
-        //String doc = "{\"petriNet\": {\"place\":[{\"Description\":\"P2\",\"id\":2,\"X\":292,\"Y\":200},{\"Description\":\"P1\",\"id\":1,\"X\":159,\"Y\":173}],\"Transition\":[{\"Description\":\"T1\",\"id\":3,\"X\":128,\"Y\":298}]}}";
-        JSONObject obj = new JSONObject(doc);
+    public void fromJSON(DrawingZone crt, File file) throws IOException {
+        //String doc = "{\"petriNet\":[{\"place\":[{\"Description\":\"P2\",\"X\":325,\"Y\":143,\"nbToken\":2,\"id\":2},{\"Description\":\"P1\",\"X\":112,\"Y\":128,\"nbToken\":1,\"id\":1},{\"Description\":\"P3\",\"X\":196,\"Y\":416,\"nbToken\":2,\"id\":4},{\"Description\":\"P4\",\"X\":297,\"Y\":512,\"nbToken\":0,\"id\":291}]},{\"transition\":[{\"Description\":\"T1\",\"X\":224,\"Y\":291,\"id\":3}]},{\"arcPre\":[{\"TransitionDestination\":\"T1\",\"poids\":1,\"placeOrigine\":\"P1\",\"id\":150},{\"TransitionDestination\":\"T1\",\"poids\":1,\"placeOrigine\":\"P2\",\"id\":239}]},{\"arcPost\":[{\"poids\":1,\"id\":289,\"placeDestination\":\"P3\",\"TransitionOrigine\":\"T1\"}]}]}\n";
+        BufferedReader in = new BufferedReader(new FileReader(file));
+        String line;
+        JSONObject obj = new JSONObject();
+        while ((line = in.readLine()) != null)
+        {
+            obj = new JSONObject(line);
+        }
+        in.close();
+
+
         System.out.println(obj.toString());
         System.out.println(obj.getJSONArray("petriNet").get(0));
         JSONArray arrayJSON = obj.getJSONArray("petriNet").getJSONObject(0).getJSONArray("place");
         for(int i =0;i<arrayJSON.length();i++){
             JSONObject temp = arrayJSON.getJSONObject(i);
             Place pTemp = new Place(temp.getInt("X"),temp.getInt("Y"),crt,temp.getString("Description"));
-            //System.out.println(pTemp.getX());
             crt.addListenerPlace(pTemp);
             for (int j =0 ; j < temp.getInt("nbToken") ; j++){
                 Token tokenTemp = new Token();
@@ -254,7 +262,6 @@ public class PetriNet {
         arrayJSON = obj.getJSONArray("petriNet").getJSONObject(2).getJSONArray("arcPre");
         for (int i =0; i<arrayJSON.length();i++){
             JSONObject temp = arrayJSON.getJSONObject(i);
-
             ArcPre arcPreTemp = new ArcPre(temp.getInt("poids"),crt.getPetriNet().getPlaceByDescription(temp.getString("placeOrigine")),crt.getPetriNet().getTransitionByDescription(temp.getString("TransitionDestination")));
             crt.addPetriNet(arcPreTemp);
             crt.addPetriNetPaneChild(arcPreTemp);

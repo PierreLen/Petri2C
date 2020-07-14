@@ -73,7 +73,7 @@ public class DrawingZone {
             case ARC:
                 break;
             case EDITION:
-                petriNet.fromJSON(this);
+                //petriNet.fromJSON(this);
                 break;
             case TOKEN:
                 break;
