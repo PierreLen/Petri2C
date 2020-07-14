@@ -173,6 +173,7 @@ public class PetriNet {
             place.put("id", p.getPnId());
             place.put("X", p.getX());
             place.put("Y",p.getY());
+            place.put("nbToken",p.getTokens().size());
             arrayPlace.put(place);
 
         }
@@ -206,14 +207,26 @@ public class PetriNet {
         }
         arcPres.put("arcPre",arrayArcPre);
 
+        JSONObject arcPosts = new JSONObject();
+        JSONArray arrayArcPost = new JSONArray();
+        for(ArcPost a : this.arcPosts){
+            JSONObject arc = new JSONObject();
+            arc.put("id", a.getPnId());
+            arc.put("poids", a.getPoids());
+            arc.put("TransitionOrigine",a.getOrigine().getDescription());
+            arc.put("placeDestination",a.getDestination().getDescription());
+            arrayArcPost.put(arc);
+
+        }
+        arcPosts.put("arcPost",arrayArcPost);
 
         petrinet.opt("petriNet");
-        petrinet.put("petriNet",places).accumulate("petriNet",transitions).accumulate("petriNet",arcPres);
+        petrinet.put("petriNet",places).accumulate("petriNet",transitions).accumulate("petriNet",arcPres).accumulate("petriNet",arcPosts);
         return petrinet.toString();
     }
 
     public void fromJSON(DrawingZone crt){
-        String doc = "{\"petriNet\":[{\"place\":[{\"Description\":\"P2\",\"X\":326,\"Y\":153,\"id\":1},{\"Description\":\"P1\",\"X\":211,\"Y\":238,\"id\":2}]},{\"transition\":[{\"Description\":\"T1\",\"X\":283,\"Y\":400,\"id\":3}]},{\"arcPre\":[{\"TransitionDestination\":\"T1\",\"poids\":1,\"placeOrigine\":\"P2\",\"id\":198},{\"TransitionDestination\":\"T1\",\"poids\":1,\"placeOrigine\":\"P1\",\"id\":4}]}]}\n";
+        String doc = "{\"petriNet\":[{\"place\":[{\"Description\":\"P2\",\"X\":325,\"Y\":143,\"nbToken\":2,\"id\":2},{\"Description\":\"P1\",\"X\":112,\"Y\":128,\"nbToken\":1,\"id\":1},{\"Description\":\"P3\",\"X\":196,\"Y\":416,\"nbToken\":2,\"id\":4},{\"Description\":\"P4\",\"X\":297,\"Y\":512,\"nbToken\":0,\"id\":291}]},{\"transition\":[{\"Description\":\"T1\",\"X\":224,\"Y\":291,\"id\":3}]},{\"arcPre\":[{\"TransitionDestination\":\"T1\",\"poids\":1,\"placeOrigine\":\"P1\",\"id\":150},{\"TransitionDestination\":\"T1\",\"poids\":1,\"placeOrigine\":\"P2\",\"id\":239}]},{\"arcPost\":[{\"poids\":1,\"id\":289,\"placeDestination\":\"P3\",\"TransitionOrigine\":\"T1\"}]}]}\n";
         //String doc = "{\"petriNet\": {\"place\":[{\"Description\":\"P2\",\"id\":2,\"X\":292,\"Y\":200},{\"Description\":\"P1\",\"id\":1,\"X\":159,\"Y\":173}],\"Transition\":[{\"Description\":\"T1\",\"id\":3,\"X\":128,\"Y\":298}]}}";
         JSONObject obj = new JSONObject(doc);
         System.out.println(obj.toString());
@@ -224,6 +237,11 @@ public class PetriNet {
             Place pTemp = new Place(temp.getInt("X"),temp.getInt("Y"),crt,temp.getString("Description"));
             //System.out.println(pTemp.getX());
             crt.addListenerPlace(pTemp);
+            for (int j =0 ; j < temp.getInt("nbToken") ; j++){
+                Token tokenTemp = new Token();
+                pTemp.addToken(tokenTemp);
+                crt.addPetriNet(tokenTemp);
+            }
             pTemp.update();
         }
         arrayJSON = obj.getJSONArray("petriNet").getJSONObject(1).getJSONArray("transition");
@@ -242,6 +260,15 @@ public class PetriNet {
             crt.addPetriNetPaneChild(arcPreTemp);
             crt.getPetriNet().getTransitionByDescription(temp.getString("TransitionDestination")).addArcPre(arcPreTemp);
             arcPreTemp.update();
+        }
+        arrayJSON = obj.getJSONArray("petriNet").getJSONObject(3).getJSONArray("arcPost");
+        for (int i =0; i<arrayJSON.length();i++){
+            JSONObject temp = arrayJSON.getJSONObject(i);
+            ArcPost arcPostTemp = new ArcPost(temp.getInt("poids"),crt.getPetriNet().getTransitionByDescription(temp.getString("TransitionOrigine")),crt.getPetriNet().getPlaceByDescription(temp.getString("placeDestination")));
+            crt.addPetriNet(arcPostTemp);
+            crt.addPetriNetPaneChild(arcPostTemp);
+            crt.getPetriNet().getTransitionByDescription(temp.getString("TransitionOrigine")).addArcPost(arcPostTemp);
+            arcPostTemp.update();
         }
 
     }
