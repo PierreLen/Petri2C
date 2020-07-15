@@ -231,13 +231,14 @@ public class PetriNet {
         BufferedReader in = new BufferedReader(new FileReader(file));
         String line;
         JSONObject obj = new JSONObject();
+        String doc = "";
         while ((line = in.readLine()) != null)
         {
-            obj = new JSONObject(line);
+            doc+=line.replaceAll(" ","");
         }
         in.close();
 
-
+        obj = new JSONObject(doc);
         System.out.println(obj.toString());
         System.out.println(obj.getJSONArray("petriNet").get(0));
         JSONArray arrayJSON = obj.getJSONArray("petriNet").getJSONObject(0).getJSONArray("place");
