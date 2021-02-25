@@ -61,6 +61,8 @@ public class DrawingZone {
             dragging = false;
             return;
         }
+        System.out.println(petriNet.gettoJSON());
+
         switch (mainController.getCurrentRadio()) {
             case PLACE:
                 createPlace(mouseEvent);
@@ -71,6 +73,7 @@ public class DrawingZone {
             case ARC:
                 break;
             case EDITION:
+                //petriNet.fromJSON(this);
                 break;
             case TOKEN:
                 break;
@@ -244,5 +247,91 @@ public class DrawingZone {
 
     public PetriNet getPetriNet() {
         return petriNet;
+    }
+
+    public void addPetriNetPaneChild(Node p){
+        petriNetPane.getChildren().add(p);
+    }
+
+    public void addPetriNet(PetriNetComponent p){
+        petriNet.addPetriObject(p);
+    }
+
+    public void addListenerPlace(Place place){
+
+        place.setOnMouseClicked(me -> {
+            // consume() permet d'éviter le bubble d'évent un peu comme prevent default en js
+            me.consume(); // pour éviter de mettre une place
+            switch (mainController.getCurrentRadio()) {
+                case ARC:
+                    if (selectedPlace == null) {
+                        selectedPlace = place;
+                    }
+                    if (selectedTransition != null) {
+                        ArcPost arcPost = new ArcPost(selectedTransition, selectedPlace);
+                        petriNet.addPetriObject(arcPost);
+                        this.petriNetPane.getChildren().add(arcPost);
+                        selectedTransition.addArcPost(arcPost);
+                        resetArcCreation();
+                    }
+                    break;
+                case TOKEN:
+                    if (me.getButton() == MouseButton.SECONDARY) {
+                        Token t = place.removeToken();
+                        petriNet.removePetriObject(t);
+                    } else if (me.getButton() == MouseButton.PRIMARY) {
+                        Token t = new Token();
+                        place.addToken(t);
+                        petriNet.addPetriObject(t);
+                    }
+                    place.update();
+                    break;
+            }
+        });
+
+        place.setOnMouseDragged(me -> {
+            place.setX(place.getX() + (int) (me.getX()));
+            place.setY(place.getY() + (int) (me.getY()));
+            updateArcs();
+        });
+        petriNetPane.getChildren().add(place);
+        petriNet.addPetriObject(place);
+    }
+
+    public void addListenerTransition(Transition transition){
+        transition.setOnMouseDragged(me -> {
+            transition.setX(transition.getX() + (int) (me.getX()));
+            transition.setY(transition.getY() + (int) (me.getY()));
+            updateArcs();
+        });
+        transition.setOnMouseClicked(me -> {
+            me.consume();
+            switch (mainController.getCurrentRadio()) {
+                case ARC:
+                    if (selectedTransition == null) {
+                        selectedTransition = transition;
+                    }
+                    if (selectedPlace != null) {
+                        // on crée l'arc pre
+                        ArcPre arcPre = new ArcPre(selectedPlace, selectedTransition);
+                        petriNet.addPetriObject(arcPre);
+                        this.petriNetPane.getChildren().add(arcPre);
+                        selectedTransition.addArcPre(arcPre);
+                        resetArcCreation();
+                    }
+                    break;
+                case FRANCHIR:
+                    petriNet.franchir(transition);
+                    for (Place place : petriNet.getPlaces()) {
+                        place.update();
+                    }
+                    for (Transition petriNetTransition : petriNet.getTransitions()) {
+                        petriNetTransition.updateColor(true);
+                    }
+                    break;
+            }
+        });
+        petriNetPane.getChildren().add(transition);
+        petriNet.addPetriObject(transition);
     }
 }
