@@ -1,0 +1,95 @@
+{
+  "petriNet": [
+    {
+      "place": [
+        {
+          "Description": "P1",
+          "X": 203,
+          "Y": 142,
+          "nbToken": 0,
+          "id": 2
+        },
+        {
+          "Description": "P3",
+          "X": 443,
+          "Y": 270,
+          "nbToken": 0,
+          "id": 4
+        },
+        {
+          "Description": "P2",
+          "X": 171,
+          "Y": 440,
+          "nbToken": 1,
+          "id": 1
+        }
+      ]
+    },
+    {
+      "transition": [
+        {
+          "Description": "T1",
+          "X": 195,
+          "Y": 239,
+          "id": 6
+        },
+        {
+          "Description": "T2",
+          "X": 397,
+          "Y": 386,
+          "id": 5
+        },
+        {
+          "Description": "T3",
+          "X": 372,
+          "Y": 165,
+          "id": 11
+        }
+      ]
+    },
+    {
+      "arcPre": [
+        {
+          "TransitionDestination": "T2",
+          "poids": 1,
+          "placeOrigine": "P2",
+          "id": 7
+        },
+        {
+          "TransitionDestination": "T1",
+          "poids": 1,
+          "placeOrigine": "P1",
+          "id": 8
+        },
+        {
+          "TransitionDestination": "T3",
+          "poids": 1,
+          "placeOrigine": "P3",
+          "id": 66
+        }
+      ]
+    },
+    {
+      "arcPost": [
+        {
+          "poids": 1,
+          "id": 9,
+          "placeDestination": "P2",
+          "TransitionOrigine": "T1"
+        },
+        {
+          "poids": 1,
+          "id": 10,
+          "placeDestination": "P3",
+          "TransitionOrigine": "T2"
+        },
+        {
+          "poids": 1,
+          "id": 150,
+          "placeDestination": "P1",
+          "TransitionOrigine": "T3"
+        }
+      ]
+    }
+  ]
+}
