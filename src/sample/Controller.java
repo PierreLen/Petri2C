@@ -20,6 +20,7 @@ import java.awt.*;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.PrintWriter;
 
 public class Controller {
 
@@ -72,6 +73,15 @@ public class Controller {
             // Effectuer la sauvegarde
                 this.drawingZoneController.getPetriNet().fromJSON(drawingZoneController, file);
         }
+    }
+
+    public void exportReseau(MouseEvent mouseEvent) throws IOException {
+
+        //System.out.println(this.drawingZoneController.getPetriNet().gettoJSON());
+        //this.drawingZoneController.getPetriNet().gettoJSON();
+        PrintWriter writer = new PrintWriter("reseau.json", "UTF-8");
+        writer.println(this.drawingZoneController.getPetriNet().gettoJSON());
+        writer.close();
     }
 
 
