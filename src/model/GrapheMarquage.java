@@ -1,40 +1,41 @@
-package modele;
+package model;
 
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-public class GraphMarquage {
+public class GrapheMarquage {
 
     PetriNet petriNet;
+
     Map<Marquage, Set<Marquage>> grapheDeMarquage = new HashMap<>();
 
-    public GraphMarquage(PetriNet petriNet) {
+    public GrapheMarquage(PetriNet petriNet) {
         this.petriNet = petriNet;
     }
 
     public Map<Marquage, Set<Marquage>> getGrapheDeMarquage() {
-        getMarquage(petriNet);
+        remplirGraphDeMarquage(this.petriNet);
         return grapheDeMarquage;
     }
 
-    public void getMarquage(PetriNet net) {
+    /**
+     * @param net pas convaincu par le paramètre exterieur
+     */
+    public void remplirGraphDeMarquage(PetriNet net) {
         Set<Marquage> marquages = new HashSet<>();
         Marquage currentMarquage = net.getCurrentMarquage();
         if (!grapheDeMarquage.containsKey(currentMarquage))
             grapheDeMarquage.put(currentMarquage, marquages);
         else return;
-        Set<Transition> transitionsFranchissable = net.getTransitionsFranchissable();
-        Map<Place, Integer> dumpMap = net.dumpState();
-
-        for (Transition transition : transitionsFranchissable) {
-//            PetriNet tempPn = new PetriNet(net);
-//            tempPn.franchir(transition);
-            net.franchir(transition);
+        Set<Transition> transitionsFranchissables = net.getTransitionsFranchissables();
+        Marquage dump = net.getCurrentMarquage();
+        for (Transition transitionsFranchissable : transitionsFranchissables) {
+            net.franchir(transitionsFranchissable);
             marquages.add(net.getCurrentMarquage());
-            getMarquage(net);
-            net.restore(dumpMap);
+            remplirGraphDeMarquage(net);
+            net.restoreFromMarquage(dump);
         }
     }
 
