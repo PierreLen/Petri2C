@@ -29,29 +29,72 @@ public class ArcPost extends Arc {
      * Met a jour les éléments graphiques de l'arc
      */
     public void update() {
+
         this.getChildren().clear();
         Path path = new Path();
         MoveTo moveTo = new MoveTo();
-        moveTo.setX(origine.getX());
-        moveTo.setY(origine.getY() + 3);
+
+        // variables plus courtes à manipuler
+        final int tx = origine.getX();
+        final int ty = origine.getY();
+        final int px = destination.getX();
+        final int py = destination.getY();
+
+        // position de la ligne de la flèche en fonction de la position relative de la place
+        moveTo.setX(tx);
+        if (destination.getY() > origine.getY())
+            moveTo.setY(ty + 3);
+        else
+            moveTo.setY(ty - 2);
+
+
         LineTo lineTo = new LineTo();
-        lineTo.setX(destination.getX());
-        lineTo.setY(destination.getY() - Place.getBaseRadius());
+        // transformation en vecteur
+        double x = px - tx;
+        double y = py - ty;
+        // nomalisation du vecteur pour avoir un vecteur compris entre -1 et 1
+        double norme = Math.sqrt(x * x + y * y);
+        double ux = x / norme;
+        double uy = y / norme;
+
+        // calcul des coordonées de la fin de la ligne de la flèche
+        double dist = norme - Place.getBaseRadius();
+        double xdist = ux * dist;
+        double ydist = uy * dist;
+
+        // ajout au composant
+        lineTo.setX(tx + xdist);
+        lineTo.setY(ty + ydist);
         path.getElements().add(moveTo);
         path.getElements().add(lineTo);
         path.setFill(Color.BLACK);
         path.setStroke(Color.BLACK);
         path.setStrokeWidth(2);
         this.getChildren().add(path);
-        // triangle de la fleche
+
+        // coordonées du point A du triangle collé contre le cercle
+        double ax = tx + xdist;
+        double ay = ty + ydist;
+
+        // calcul des coordonées d'un point que l'on va faire pivoter de 30 ° en horaire et antihoraire
+        // pour avoir les points B et C
+        double triangleDist = norme - Place.getBaseRadius() - 10;
+        double trX = ux * triangleDist + tx;
+        double trY = uy * triangleDist + ty;
+        // sinus et cosinus de 30°
+        double c = Math.cos(30 * Math.PI / 180);
+        double s = Math.sin(30 * Math.PI / 180);
+        //  multiplication par la matrice de rotation horaire pour avoir les coordonnées
+        double bx = ((trX - ax) * c + (trY - ay) * s) + ax;
+        double by = (-(trX - ax) * s + (trY - ay) * c) + ay;
+        // rotation antihoraire
+        double cx = ((trX - ax) * c - (trY - ay) * s) + ax;
+        double cy = ((trX - ax) * s + (trY - ay) * c) + ay;
+
+
+        // triangle de la flèche
         Polygon triangle = new Polygon();
-        triangle.getPoints().addAll(
-                (double) destination.getX(),
-                (double) destination.getY() - Place.getBaseRadius(),
-                (double) destination.getX() - 6,
-                (double) destination.getY() - 12 - Place.getBaseRadius(),
-                (double) destination.getX() + 6,
-                (double) destination.getY() - 12 - Place.getBaseRadius());
+        triangle.getPoints().addAll(ax, ay, bx, by, cx, cy);
         this.getChildren().add(triangle);
     }
 
